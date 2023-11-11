@@ -41,7 +41,7 @@
         }
         &.add {
             background-color: var(--ytd-green-color);
-            &:hover {
+            &:hover:not([disabled]) {
                 background-color: var(--ytd-green-color-hover);
             }
             &:focus {
@@ -50,7 +50,7 @@
         }
         &.edit {
             background-color: var(--ytd-cyan-color);
-            &:hover {
+            &:hover:not([disabled]) {
                 background-color: var(--ytd-cyan-color-hover);
             }
             &:focus {
@@ -58,15 +58,6 @@
             }
         }
     }
-    // & .add {
-    //     background-color: var(--ytd-green-color);
-    //     &:hover {
-    //         background-color: var(--ytd-green-color-hover);
-    //     }
-    //     &:focus {
-    //         background-color: var(--ytd-green-color-hover);
-    //     }
-    // }
 }
 
 .button--left {

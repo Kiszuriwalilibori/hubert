@@ -461,7 +461,7 @@ textarea {
 .button--login[type=button].add {
   background-color: var(--ytd-green-color);
 }
-.button--login[type=button].add:hover {
+.button--login[type=button].add:hover:not([disabled]) {
   background-color: var(--ytd-green-color-hover);
 }
 .button--login[type=button].add:focus {
@@ -470,7 +470,7 @@ textarea {
 .button--login[type=button].edit {
   background-color: var(--ytd-cyan-color);
 }
-.button--login[type=button].edit:hover {
+.button--login[type=button].edit:hover:not([disabled]) {
   background-color: var(--ytd-cyan-color-hover);
 }
 .button--login[type=button].edit:focus {

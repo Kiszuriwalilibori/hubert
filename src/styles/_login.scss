@@ -33,7 +33,13 @@
         & > * {
             margin: 0 auto;
         }
+
         & .field {
+            &--textarea {
+                position: relative;
+                & .textarea {
+                }
+            }
             @extend .flexbox-row-v-centered;
             position: relative;
             justify-content: space-between;

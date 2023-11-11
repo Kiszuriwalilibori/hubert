@@ -1,12 +1,15 @@
-import { BasicButton, Events, Login } from "components";
+import { AddEvent, BasicButton, Events, Login } from "components";
 import { useBoolean, useHandleConnectionStatus } from "hooks";
+import { isAdminSelector } from "reduxware/reducers/adminReducer";
 import "./App.css";
 import Stack from "@mui/material/Stack";
+import { useSelector } from "react-redux";
 
 function App() {
     useHandleConnectionStatus();
-
+    const isAdmin = useSelector(isAdminSelector);
     const [isLoginActive, showModal, hideModal, toggleModal] = useBoolean(false);
+    const [isAddEventActive, showAddEventModal, hideAddEvent, toggleAddEvent] = useBoolean(false);
 
     return (
         <div className="App">
@@ -32,7 +35,8 @@ function App() {
                         children="Log in as admin"
                     />
                     <BasicButton
-                        className="button--login"
+                        disabled={!isAdmin}
+                        className="button--login edit"
                         type="button"
                         aria-label="login"
                         onClick={() => {
@@ -40,8 +44,16 @@ function App() {
                         }}
                         children="Edit categories"
                     />
+                    <BasicButton
+                        disabled={!isAdmin}
+                        className="button--login add"
+                        aria-label="Add event"
+                        onClick={showAddEventModal}
+                        children="Add event"
+                    />
                 </Stack>
                 <Login isOpen={isLoginActive} handleClose={hideModal} />
+                <AddEvent isOpen={isAddEventActive} handleClose={hideAddEvent} />
                 <Events />
             </main>
             <footer className="footer"></footer>

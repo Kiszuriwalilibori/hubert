@@ -63,7 +63,7 @@ export default function EventCard({ name, image, date, description, category, id
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: "center" }}>
-                <Button disabled={!isAdmin} size="small">
+                <Button variant="contained" color="error" disabled={!isAdmin} size="small">
                     Remove
                 </Button>
 
@@ -75,7 +75,7 @@ export default function EventCard({ name, image, date, description, category, id
                 >
                     <ExpandMoreIcon />
                 </ExpandMore>
-                <Button disabled={!isAdmin} size="small">
+                <Button variant="contained" color="warning" disabled={!isAdmin} size="small">
                     Edit
                 </Button>
             </CardActions>

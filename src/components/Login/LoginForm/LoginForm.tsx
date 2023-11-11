@@ -17,15 +17,18 @@ export const LogInForm = (props: Props) => {
     const { setIsAdmin } = useDispatchAction();
     const refPassword = useRef<HTMLInputElement | null>(null);
     const refEmail = useRef<HTMLInputElement | null>(null);
+    const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
 
     const onFormSubmit = useCallback(() => {
         const password = refPassword.current!.value;
+
         if (password === process.env.REACT_APP_PASSWORD) {
             setIsAdmin(true);
             handleClose();
         } else {
             setError();
         }
+
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -91,7 +94,7 @@ export const LogInForm = (props: Props) => {
                 )}
             </label>
 
-            <BasicButton className="button--login" type="submit" aria-label="submit" children="Submit" />
+            <BasicButton onClick={blur} className="button--login" type="submit" aria-label="submit" children="Submit" />
 
             <BasicButton
                 className="button--login"

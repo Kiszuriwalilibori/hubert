@@ -39,7 +39,34 @@
         &:focus {
             background-color: var(--ytd-contrast-orange-color-hover);
         }
+        &.add {
+            background-color: var(--ytd-green-color);
+            &:hover {
+                background-color: var(--ytd-green-color-hover);
+            }
+            &:focus {
+                background-color: var(--ytd-green-color-hover);
+            }
+        }
+        &.edit {
+            background-color: var(--ytd-cyan-color);
+            &:hover {
+                background-color: var(--ytd-cyan-color-hover);
+            }
+            &:focus {
+                background-color: var(--ytd-cyan-color-hover);
+            }
+        }
     }
+    // & .add {
+    //     background-color: var(--ytd-green-color);
+    //     &:hover {
+    //         background-color: var(--ytd-green-color-hover);
+    //     }
+    //     &:focus {
+    //         background-color: var(--ytd-green-color-hover);
+    //     }
+    // }
 }
 
 .button--left {

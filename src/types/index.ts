@@ -1,8 +1,18 @@
+import { RootStateType } from "components/AppProvider";
+
 export interface Event {
     id: string;
     name: string;
-    date: { start: string; end: string };
+    date: { start: number; end: number };
     description: string;
+    image: string;
     category: string;
 }
-export type Events = Event[];
+type Events = Event[];
+
+interface CategoryColor {
+    category: string;
+    color: string;
+}
+
+export type { CategoryColor, RootStateType, Events };

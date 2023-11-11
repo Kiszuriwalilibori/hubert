@@ -1,0 +1,29 @@
+@use "./variables";
+
+$mobile: 750px;
+$xsmall: 430px;
+
+@mixin mobile {
+    @media (max-width: $mobile) {
+        @content;
+    }
+}
+
+@mixin xsmall {
+    @media (max-width: $xsmall) {
+        @content;
+    }
+}
+
+@mixin largeScreen {
+    @media (min-width: calc($mobile + 1px)) {
+        @content;
+    }
+}
+
+@mixin svg--larger {
+    & svg {
+        width: var(--svg-larger);
+        height: var(--svg-larger);
+    }
+}

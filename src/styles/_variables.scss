@@ -1,0 +1,47 @@
+:root {
+    /* colors */
+    --main-bg-color: #ffffff;
+    --secondary-bg-color: #f5f7fd;
+    --main-nav-bg-color: #425daa;
+    --blue-text-color: #425daa;
+    --main-text-color: #757575;
+    --main-text-color: #978b86;
+    --bold-text-color: #413d3e;
+    --user-baloon-color: #e2dbdb;
+    --host-baloon-color: #dee5fb;
+    --spinner-color: #cfb6a8;
+    --yt-spec-text-primary: #0f0f0f;
+    --ytd-searchbox-background: hsl(0, 0%, 100%);
+    --ytd-searchbox-legacy-border-color: #cccccc;
+    --ytd-searchbox-legacy-border-shadow-color: #eeeeee;
+    --ytd-searchbox-text-color: hsl(0, 0%, 6.7%);
+    --ytd-search-height: 40px;
+    --ytd-searchbox-legacy-button-border-color: #d3d3d3;
+    --ytd-searchbox-legacy-button-color: #f8f8f8;
+    --ytd-keayboard-icon-color: #323232;
+    --yt-spec-touch-response: #e5e5e5;
+    --ytd-searchbox-active-color: #13459a;
+    --ytd-searchbox-active-color-hover: #2174cb;
+    --ytd-alarm-color: red;
+    --text-color-primary: rgb(15, 15, 15);
+    --text-color-secondary: rgb(96, 96, 96);
+    --ytd-contrast-red-color: #ae0f2f;
+    --ytd-contrast-red-color-hover: #ca2441;
+    --ytd-contrast-orange-color: #ff9800;
+    --ytd-contrast-orange-color-hover: #ffb74d;
+
+    /* sizes */
+    --ytd-topbar-height: 56px;
+    --font-larger: 18px;
+    --large-padding: 24px;
+    --nav-width: 80px;
+    --users-search-height: 45px;
+    --users-search-wrapper-height: 80px;
+    --svg-width: 20px;
+    --svg-larger: 24px;
+    --svg-smaller: 16px;
+    --svg-middle: 18px;
+    --thumbnail-size: 270px;
+    --thumbnail-size-mobile: 180px;
+    --sidebar-margin-left: 20px;
+}

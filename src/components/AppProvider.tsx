@@ -2,20 +2,32 @@ import { ReactNode } from "react";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { Provider } from "react-redux";
+import { adminReducer, onlineReducer, eventReducer } from "../reduxware/reducers";
 
-import { adminReducer } from "../reduxware/reducers";
-
-import "styles/App.css";
-import "../i18n/config";
 import React from "react";
+import { SnackbarProvider } from "notistack";
 
 const rootReducer = combineReducers({
     admin: adminReducer,
+    online: onlineReducer,
+    events: eventReducer,
 });
 
 export const store = configureStore({ reducer: rootReducer });
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+        <Provider store={store}>
+            <SnackbarProvider
+                maxSnack={3}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                }}
+            >
+                {children}
+            </SnackbarProvider>
+        </Provider>
+    );
 };
 
 export type RootStateType = ReturnType<typeof store.getState>;

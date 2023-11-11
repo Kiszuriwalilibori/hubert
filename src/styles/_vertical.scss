@@ -1,0 +1,7 @@
+.vertical-timeline-corrected {
+    width: 400px;
+    & .vertical-timeline-element-content {
+        box-shadow: none;
+        padding: 0;
+    }
+}

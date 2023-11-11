@@ -1,0 +1,114 @@
+@use "./variables";
+@use "./mixins";
+
+#root {
+    width: 100vw;
+    height: 100vh;
+    font-family: "Roboto", sans-serif;
+}
+
+.circular--square {
+    border-radius: 50%;
+    position: relative;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+}
+
+input,
+select,
+textarea {
+    color: var(--main-text-color);
+    font-size: 16px;
+}
+
+.flexbox-row-v-centered {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.flexbox-row-centered {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--text-color-primary);
+}
+.description {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: var(--text-color-secondary);
+}
+
+.full-page {
+    position: fixed;
+    z-index: 999;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.shout-text {
+    font-size: 48px;
+    color: var(--ytd-alarm-color);
+    &--small {
+        font-size: 24px;
+        text-align: center;
+        color: var(--ytd-alarm-color);
+    }
+}
+
+.darkening {
+    transition: background-color 0.3s;
+    &:hover {
+        background-color: var(--yt-spec-touch-response);
+    }
+}
+
+.hidden {
+    display: none;
+}
+.invisible {
+    visibility: hidden;
+}
+
+.hiddenxsmall {
+    @include xsmall {
+        display: none;
+    }
+}
+
+.sr-only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.rotated {
+    transform: rotateZ(-90deg);
+}
+
+*:focus {
+    outline: 2px ridge #0ca4f6;
+    outline-offset: 1px;
+    z-index: 2000;
+}

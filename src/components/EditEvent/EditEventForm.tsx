@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { useForm } from "react-hook-form";
 
@@ -6,15 +6,17 @@ import { useDispatchAction } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
 import { Event } from "types";
+import moment from "moment";
 
 interface Props {
     setError: () => void;
     clearError: () => void;
     handleClose: () => void;
+    initialData: Event;
 }
 
-export const AddEventForm = (props: Props) => {
-    const { setError, clearError, handleClose } = props;
+export const EditEventForm = (props: Props) => {
+    const { setError, clearError, handleClose, initialData } = props;
 
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
@@ -27,10 +29,10 @@ export const AddEventForm = (props: Props) => {
             name: data.name,
             description: data.description,
             image: data.image,
-            id: (Math.random() + 1).toString(36).substring(2),
+            id: initialData.id,
             date: { start: Number(new Date(data.start_date)), end: Number(new Date(data.end_date)) },
         };
-        console.log("newEvent", newEvent);
+        console.log(newEvent);
         handleClose();
 
         // todo w tym miejscu należy wyslać dane
@@ -39,6 +41,7 @@ export const AddEventForm = (props: Props) => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
         clearErrors,
     } = useForm();
@@ -47,6 +50,14 @@ export const AddEventForm = (props: Props) => {
         clearErrors();
         clearError();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        let defaultValues = { ...initialData } as any;
+        defaultValues.start_date = moment.unix(initialData.date.start / 1000).format("YYYY-MM-DD");
+        defaultValues.end_date = moment.unix(initialData.date.end / 1000).format("YYYY-MM-DD");
+
+        reset({ ...defaultValues });
     }, []);
 
     return (
@@ -186,4 +197,4 @@ export const AddEventForm = (props: Props) => {
     );
 };
 
-export default AddEventForm;
+export default EditEventForm;

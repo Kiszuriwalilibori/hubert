@@ -15,6 +15,7 @@ const Events = () => {
         <VerticalTimeline layout={"1-column-left"} className="vertical-timeline-corrected">
             {events.map((event: Event) => {
                 const styles = getStyles(colors, event);
+
                 return (
                     <VerticalTimelineElement
                         key={event.date.start}
@@ -22,7 +23,7 @@ const Events = () => {
                         contentArrowStyle={styles.arrow}
                         iconStyle={styles.icon}
                     >
-                        <EventCard {...event} />
+                        <EventCard event={event} color={styles.icon.background as string} />
                     </VerticalTimelineElement>
                 );
             })}

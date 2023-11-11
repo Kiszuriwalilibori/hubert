@@ -13,22 +13,25 @@ import { styled } from "@mui/material/styles";
 import Collapse from "@mui/material/Collapse";
 import { useSelector } from "react-redux";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
+import { useDispatchAction } from "hooks";
+import { useCallback } from "react";
+import { convertEpochToSpecificTimezone } from "./utils";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
 }
-const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-};
+// const options = {
+//     year: "numeric",
+//     month: "long",
+//     day: "numeric",
+// };
 
-function convertEpochToSpecificTimezone(timeEpoch: string | number | Date, offset: number) {
-    var d = new Date(timeEpoch);
-    var utc = d.getTime() + d.getTimezoneOffset() * 60000;
-    var nd = new Date(utc + 3600000 * offset);
-    return nd.toLocaleString("en-US", options as any);
-}
+// function convertEpochToSpecificTimezone(timeEpoch: string | number | Date, offset: number) {
+//     var d = new Date(timeEpoch);
+//     var utc = d.getTime() + d.getTimezoneOffset() * 60000;
+//     var nd = new Date(utc + 3600000 * offset);
+//     return nd.toLocaleString("en-US", options as any);
+// }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
@@ -40,10 +43,21 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
         duration: theme.transitions.duration.shortest,
     }),
 }));
+interface Props {
+    event: Event;
+    color: string;
+}
+export default function EventCard(props: Props) {
+    const { name, image, date, description, category, id } = props.event;
 
-export default function EventCard({ name, image, date, description, category, id }: Event) {
     const [expanded, setExpanded] = React.useState(false);
     const isAdmin = useSelector(isAdminSelector);
+    const { setIsEditEventActive, setEditEventData } = useDispatchAction();
+
+    const handleEdit = useCallback(() => {
+        setIsEditEventActive(true);
+        setEditEventData({ ...props.event });
+    }, [setIsEditEventActive]);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -54,6 +68,9 @@ export default function EventCard({ name, image, date, description, category, id
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     {name}
+                </Typography>
+                <Typography gutterBottom variant="body2" component="div" sx={{ color: props.color }}>
+                    {category}
                 </Typography>
                 <Typography gutterBottom variant="body1" component="div">
                     {`${convertEpochToSpecificTimezone(date.start, 0)} - ${convertEpochToSpecificTimezone(
@@ -75,7 +92,14 @@ export default function EventCard({ name, image, date, description, category, id
                 >
                     <ExpandMoreIcon />
                 </ExpandMore>
-                <Button variant="contained" color="warning" disabled={!isAdmin} size="small">
+                <Button
+                    // onClick={() => setIsEditEventActive(true)}
+                    onClick={handleEdit}
+                    variant="contained"
+                    color="warning"
+                    disabled={!isAdmin}
+                    size="small"
+                >
                     Edit
                 </Button>
             </CardActions>

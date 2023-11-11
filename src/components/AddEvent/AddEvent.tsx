@@ -13,7 +13,7 @@ interface Props {
     isOpen: boolean;
     handleClose: () => void;
 }
-const Login = (props: Props) => {
+const AddEvent = (props: Props) => {
     const { isOpen, handleClose } = props;
 
     const isOnline = useSelector(isOnlineSelector);
@@ -30,4 +30,4 @@ const Login = (props: Props) => {
     );
 };
 
-export default Login;
+export default AddEvent;

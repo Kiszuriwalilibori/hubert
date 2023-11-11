@@ -1,4 +1,4 @@
-import { AddEvent, BasicButton, Events, Login } from "components";
+import { AddEvent, BasicButton, EditEvent, Events, Login } from "components";
 import { useBoolean, useHandleConnectionStatus } from "hooks";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
 import "./App.css";
@@ -10,7 +10,7 @@ function App() {
     const isAdmin = useSelector(isAdminSelector);
     const [isLoginActive, showModal, hideModal, toggleModal] = useBoolean(false);
     const [isAddEventActive, showAddEventModal, hideAddEvent, toggleAddEvent] = useBoolean(false);
-
+    const [isEditEventActive, showEditEventModal, hideEditEvent, toggleEditEvent] = useBoolean(false);
     return (
         <div className="App">
             <header className="footer"></header>
@@ -52,9 +52,10 @@ function App() {
                         children="Add event"
                     />
                 </Stack>
+                <Events />
                 <Login isOpen={isLoginActive} handleClose={hideModal} />
                 <AddEvent isOpen={isAddEventActive} handleClose={hideAddEvent} />
-                <Events />
+                <EditEvent />
             </main>
             <footer className="footer"></footer>
         </div>

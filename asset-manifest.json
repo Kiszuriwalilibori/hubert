@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/hubert/static/css/main.147481d9.css",
+    "main.css": "/hubert/static/css/main.d4ad1d47.css",
     "main.js": "/hubert/static/js/main.fbb6405f.js",
     "index.html": "/hubert/index.html",
-    "main.147481d9.css.map": "/hubert/static/css/main.147481d9.css.map",
+    "main.d4ad1d47.css.map": "/hubert/static/css/main.d4ad1d47.css.map",
     "main.fbb6405f.js.map": "/hubert/static/js/main.fbb6405f.js.map"
   },
   "entrypoints": [
-    "static/css/main.147481d9.css",
+    "static/css/main.d4ad1d47.css",
     "static/js/main.fbb6405f.js"
   ]
 }

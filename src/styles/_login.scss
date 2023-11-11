@@ -77,8 +77,8 @@
             }
             &__hint {
                 position: absolute;
-                bottom: 16px;
-                right: -100px;
+                top: -16px;
+                right: 4px;
                 color: var(--ytd-alarm-color);
                 font-size: x-small;
                 font-style: italic;

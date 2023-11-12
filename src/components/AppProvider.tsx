@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { Provider } from "react-redux";
-import { adminReducer, onlineReducer, eventReducer, editEventReducer } from "../reduxware/reducers";
+import { adminReducer, categoriesReducer, onlineReducer, eventReducer, editEventReducer } from "../reduxware/reducers";
 
 import React from "react";
 import { SnackbarProvider } from "notistack";
@@ -12,6 +12,7 @@ const rootReducer = combineReducers({
     online: onlineReducer,
     events: eventReducer,
     editEvent: editEventReducer,
+    categories: categoriesReducer,
 });
 
 export const store = configureStore({ reducer: rootReducer });

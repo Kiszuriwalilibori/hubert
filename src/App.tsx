@@ -1,4 +1,4 @@
-import { AddEvent, BasicButton, EditEvent, Events, Login } from "components";
+import { AddEvent, BasicButton, EditEvent, Events, Login, ManageCategories } from "components";
 import { useBoolean, useHandleConnectionStatus } from "hooks";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
 import "./App.css";
@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 function App() {
     useHandleConnectionStatus();
     const isAdmin = useSelector(isAdminSelector);
-    const [isLoginActive, showModal, hideModal, toggleModal] = useBoolean(false);
-    const [isAddEventActive, showAddEventModal, hideAddEvent, toggleAddEvent] = useBoolean(false);
-    const [isEditEventActive, showEditEventModal, hideEditEvent, toggleEditEvent] = useBoolean(false);
+    const [isLoginActive, showModal, hideModal] = useBoolean(false);
+    const [isAddEventActive, showAddEventModal, hideAddEvent] = useBoolean(false);
+    const [isManageCategoriesActive, showManageCategoriesModal, hideManageCategoriesModal] = useBoolean(false);
     return (
         <div className="App">
             <header className="footer"></header>
@@ -39,10 +39,8 @@ function App() {
                         className="button--login edit"
                         type="button"
                         aria-label="login"
-                        onClick={() => {
-                            console.log("edit category");
-                        }}
-                        children="Edit categories"
+                        onClick={showManageCategoriesModal}
+                        children="Manage categories"
                     />
                     <BasicButton
                         disabled={!isAdmin}
@@ -56,6 +54,7 @@ function App() {
                 <Login isOpen={isLoginActive} handleClose={hideModal} />
                 <AddEvent isOpen={isAddEventActive} handleClose={hideAddEvent} />
                 <EditEvent />
+                <ManageCategories isOpen={isManageCategoriesActive} handleClose={hideManageCategoriesModal} />
             </main>
             <footer className="footer"></footer>
         </div>

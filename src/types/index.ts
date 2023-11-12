@@ -25,4 +25,10 @@ interface CategoryColor {
     color: string;
 }
 
-export type { CategoryColor, RootStateType, Events };
+interface Category {
+    id: number;
+    name: string;
+}
+type Categories = Category[];
+
+export type { CategoryColor, RootStateType, Events, Category, Categories };

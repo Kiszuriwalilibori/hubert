@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AddCategoryForm from "./AddCategoryForm";
+import CategoriesList from "./CategoriesList";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -22,11 +23,7 @@ function TabPanel(props: TabPanelProps) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
         </div>
     );
 }
@@ -57,7 +54,7 @@ export default function BasicTabs() {
                 <AddCategoryForm />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <CategoriesList />
             </TabPanel>
         </Box>
     );

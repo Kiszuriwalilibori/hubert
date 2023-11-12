@@ -37,7 +37,7 @@ export const EditEventForm = (props: Props) => {
             start_date: Number(new Date(data.start_date)) / 1000,
             end_date: Number(new Date(data.end_date)) / 1000,
         };
-        console.log(newEvent);
+
         handleClose();
 
         // todo w tym miejscu należy wyslać dane
@@ -59,7 +59,7 @@ export const EditEventForm = (props: Props) => {
 
     useEffect(() => {
         let defaultValues = { ...initialData } as any;
-        console.log("start date", initialData.start_date);
+
         defaultValues.start_date = moment.unix(initialData.start_date).format("YYYY-MM-DD");
         defaultValues.end_date = moment.unix(initialData.end_date).format("YYYY-MM-DD");
 
@@ -139,9 +139,6 @@ export const EditEventForm = (props: Props) => {
                         {criterions.name.required}
                     </span>
                 )}
-                {/* {errors.name && errors.name.type === "pattern" && (
-                    <span className="field__hint">{messages.pattern}</span>
-                )} */}
             </label>
 
             {/* image comes here */}

@@ -1,19 +1,23 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { useForm } from "react-hook-form";
 
 import { useDispatchAction } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
-import { Event } from "types";
+import { Category, Event } from "types";
 
-export const AddCategoryForm = () => {
+interface Props {
+    category: Category;
+}
+
+export const EditCategoryForm = (props: Props) => {
+    const { category } = props;
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
 
     const onFormSubmit = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
-
         const newCategory = {
             category: data.category,
         };
@@ -26,6 +30,7 @@ export const AddCategoryForm = () => {
         handleSubmit,
         formState: { errors },
         clearErrors,
+        reset,
     } = useForm();
 
     const handleReset = useCallback(() => {
@@ -33,6 +38,13 @@ export const AddCategoryForm = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        let defaultValues = {} as any;
+        defaultValues.category = category.name;
+
+        reset({ ...defaultValues });
+    }, [category]);
 
     return (
         <form className="login__form" onSubmit={handleSubmit(onFormSubmit)} ref={refForm}>
@@ -72,4 +84,4 @@ export const AddCategoryForm = () => {
     );
 };
 
-export default AddCategoryForm;
+export default EditCategoryForm;

@@ -28,7 +28,8 @@ export const AddEventForm = (props: Props) => {
             description: data.description,
             image: data.image,
             id: (Math.random() + 1).toString(36).substring(2),
-            date: { start: Number(new Date(data.start_date)), end: Number(new Date(data.end_date)) },
+            start_date: Number(new Date(data.start_date)) / 1000,
+            end_date: Number(new Date(data.end_date)) / 1000,
         };
         console.log("newEvent", newEvent);
         handleClose();

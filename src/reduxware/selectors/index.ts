@@ -3,10 +3,10 @@ import { getAllEvents } from "reduxware/reducers/eventReducer";
 import { Events, Event } from "types/index";
 
 function compareEvents(a: Event, b: Event) {
-    if (a.date.start < b.date.start) {
+    if (a.start_date < b.start_date) {
         return 1;
     }
-    if (a.date.start > b.date.start) {
+    if (a.start_date > b.start_date) {
         return -1;
     }
     return 0;

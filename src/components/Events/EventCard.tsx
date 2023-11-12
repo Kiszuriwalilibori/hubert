@@ -16,6 +16,7 @@ import { isAdminSelector } from "reduxware/reducers/adminReducer";
 import { useDispatchAction } from "hooks";
 import { useCallback } from "react";
 import { convertEpochToSpecificTimezone } from "./utils";
+import moment from "moment";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -36,7 +37,7 @@ interface Props {
     color: string;
 }
 export default function EventCard(props: Props) {
-    const { name, image, date, description, category, id } = props.event;
+    const { name, image, start_date, end_date, description, category, id } = props.event;
 
     const [expanded, setExpanded] = React.useState(false);
     const isAdmin = useSelector(isAdminSelector);
@@ -60,11 +61,9 @@ export default function EventCard(props: Props) {
                 <Typography gutterBottom variant="body2" component="div" sx={{ color: props.color }}>
                     {category}
                 </Typography>
+
                 <Typography gutterBottom variant="body1" component="div">
-                    {`${convertEpochToSpecificTimezone(date.start, 0)} - ${convertEpochToSpecificTimezone(
-                        date.end,
-                        0
-                    )}`}
+                    {`${moment.unix(start_date).format("YYYY-MM-DD")} - ${moment.unix(end_date).format("YYYY-MM-DD")}`}
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: "center" }}>

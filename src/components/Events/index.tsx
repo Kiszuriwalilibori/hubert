@@ -18,7 +18,7 @@ const Events = () => {
 
                 return (
                     <VerticalTimelineElement
-                        key={event.date.start}
+                        key={event.start_date}
                         contentStyle={{ background: "transparent" }}
                         contentArrowStyle={styles.arrow}
                         iconStyle={styles.icon}

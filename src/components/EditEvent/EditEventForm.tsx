@@ -30,7 +30,8 @@ export const EditEventForm = (props: Props) => {
             description: data.description,
             image: data.image,
             id: initialData.id,
-            date: { start: Number(new Date(data.start_date)), end: Number(new Date(data.end_date)) },
+            start_date: Number(new Date(data.start_date)) / 1000,
+            end_date: Number(new Date(data.end_date)) / 1000,
         };
         console.log(newEvent);
         handleClose();
@@ -54,8 +55,9 @@ export const EditEventForm = (props: Props) => {
 
     useEffect(() => {
         let defaultValues = { ...initialData } as any;
-        defaultValues.start_date = moment.unix(initialData.date.start / 1000).format("YYYY-MM-DD");
-        defaultValues.end_date = moment.unix(initialData.date.end / 1000).format("YYYY-MM-DD");
+        console.log("start date", initialData.start_date);
+        defaultValues.start_date = moment.unix(initialData.start_date).format("YYYY-MM-DD");
+        defaultValues.end_date = moment.unix(initialData.end_date).format("YYYY-MM-DD");
 
         reset({ ...defaultValues });
     }, []);

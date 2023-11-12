@@ -6,6 +6,9 @@ import { useDispatchAction } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
 import { Event } from "types";
+import { useSelector } from "react-redux";
+import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
+import uuid from "react-uuid";
 
 interface Props {
     setError: () => void;
@@ -15,6 +18,9 @@ interface Props {
 
 export const AddEventForm = (props: Props) => {
     const { setError, clearError, handleClose } = props;
+
+    const categories = useSelector(getCategoriesSelector);
+    console.log("categ", categories);
 
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
@@ -76,7 +82,7 @@ export const AddEventForm = (props: Props) => {
             </label>
             {/* category comes here */}
 
-            <label className="field">
+            {/* <label className="field">
                 <p className="field__label">category</p>
                 <input
                     className="field__input"
@@ -96,6 +102,35 @@ export const AddEventForm = (props: Props) => {
                 {errors.name && errors.name.type === "pattern" && (
                     <span className="field__hint">{messages.pattern}</span>
                 )}
+            </label> */}
+
+            <label className="field">
+                <p className="field__label">category</p>
+                <select
+                    className="field__input"
+                    autoComplete="category"
+                    autoCorrect="off"
+                    tabIndex={0}
+                    placeholder="Type category here..."
+                    {...register("category", validators.category)}
+                >
+                    {categories.map(category => {
+                        return (
+                            <option key={uuid()} value={category.id}>
+                                {category.name}
+                            </option>
+                        );
+                    })}
+                </select>
+                {errors.name && errors.name.type === "required" && (
+                    <span className="field__hint">
+                        {messages.required}
+                        {criterions.name.required}
+                    </span>
+                )}
+                {/* {errors.name && errors.name.type === "pattern" && (
+                    <span className="field__hint">{messages.pattern}</span>
+                )} */}
             </label>
 
             {/* image comes here */}

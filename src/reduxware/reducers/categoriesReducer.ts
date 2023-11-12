@@ -21,6 +21,6 @@ export const categoriesReducer = createReducer(initialState, builder => {
     });
 });
 
-export const getAllCategories = (state: RootStateType) => state.categories.categories;
+export const getCategoriesSelector = (state: RootStateType) => state.categories.categories;
 
 export default categoriesReducer;

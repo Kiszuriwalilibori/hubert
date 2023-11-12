@@ -20,18 +20,6 @@ import { convertEpochToSpecificTimezone } from "./utils";
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
 }
-// const options = {
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-// };
-
-// function convertEpochToSpecificTimezone(timeEpoch: string | number | Date, offset: number) {
-//     var d = new Date(timeEpoch);
-//     var utc = d.getTime() + d.getTimezoneOffset() * 60000;
-//     var nd = new Date(utc + 3600000 * offset);
-//     return nd.toLocaleString("en-US", options as any);
-// }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;

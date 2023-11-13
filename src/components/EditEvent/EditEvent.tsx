@@ -1,11 +1,13 @@
-import { useCallback, useEffect } from "react";
+import Modal from "@mui/material/Modal";
+import { useCallback } from "react";
 import { useSelector } from "react-redux";
+
+import EditEventForm from "./EditEventForm";
+
 import { useMessage, useDispatchAction, useBoolean } from "hooks";
 import { isOnlineSelector } from "reduxware/reducers/onlineReducer";
-import Modal from "@mui/material/Modal";
-import AddEventPrompt from "./EditEventPrompt";
-import EditEventForm from "./EditEventForm";
 import { editEventDataSelector, isEditEventActiveSelector } from "reduxware/reducers/editEventReducer";
+import { CloseButton } from "components";
 
 const EditEvent = () => {
     const { setIsEditEventActive } = useDispatchAction();
@@ -23,7 +25,8 @@ const EditEvent = () => {
     return (
         <Modal sx={{ outline: 0 }} open={isOpen} onClose={handleClose}>
             <section className="login">
-                {isOnline && <AddEventPrompt />}
+                <CloseButton closeHandler={handleClose} />
+                <h2 className="login__prompt">Please edit event data</h2>;
                 {isOnline && (
                     <EditEventForm
                         handleClose={handleClose}

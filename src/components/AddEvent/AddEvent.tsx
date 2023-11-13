@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-
-// import { InvalidCredentialsMessage, LoginForm, LoginPrompt } from ".";
-import { useMessage, useDispatchAction, useBoolean } from "hooks";
-
-import { isOnlineSelector } from "reduxware/reducers/onlineReducer";
 import Modal from "@mui/material/Modal";
-import AddEventPrompt from "./AddEventPrompt";
+
+import { useSelector } from "react-redux";
+import { useMessage, useDispatchAction, useBoolean } from "hooks";
+import { isOnlineSelector } from "reduxware/reducers/onlineReducer";
+
 import AddEventForm from "./AddEventForm";
+import CloseButton from "components/CloseButton";
 
 interface Props {
     isOpen: boolean;
@@ -23,7 +21,8 @@ const AddEvent = (props: Props) => {
     return (
         <Modal sx={{ outline: 0 }} open={isOpen} onClose={handleClose}>
             <section className="login">
-                {isOnline && <AddEventPrompt />}
+                <CloseButton closeHandler={handleClose} />
+                <h2 className="login__prompt">Please enter event data</h2>
                 {isOnline && <AddEventForm handleClose={handleClose} setError={setError} clearError={clearError} />}
             </section>
         </Modal>

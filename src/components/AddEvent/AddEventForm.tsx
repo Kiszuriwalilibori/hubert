@@ -18,9 +18,7 @@ interface Props {
 
 export const AddEventForm = (props: Props) => {
     const { setError, clearError, handleClose } = props;
-
     const categories = useSelector(getCategoriesSelector);
-
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
 
@@ -104,9 +102,6 @@ export const AddEventForm = (props: Props) => {
                         {criterions.name.required}
                     </span>
                 )}
-                {/* {errors.name && errors.name.type === "pattern" && (
-                    <span className="field__hint">{messages.pattern}</span>
-                )} */}
             </label>
 
             {/* image comes here */}

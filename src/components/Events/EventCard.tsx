@@ -60,9 +60,10 @@ export default function EventCard(props: Props) {
                 <Typography gutterBottom variant="body2" component="div" sx={{ color: props.color }}>
                     {category}
                 </Typography>
-
                 <Typography gutterBottom variant="body1" component="div">
-                    {`${moment.unix(start_date).format("YYYY-MM-DD")} - ${moment.unix(end_date).format("YYYY-MM-DD")}`}
+                    {`${moment.unix(start_date).format("DD-MMM-YYYY")} - ${moment
+                        .unix(end_date)
+                        .format("DD-MMM-YYYY")}`}
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: "center" }}>

@@ -37,8 +37,8 @@ const Events = () => {
                         <div className="event-printable">
                             <h2>{event.name}</h2>
                             <p>Kategoria: {event.category}</p>
-                            <p>Start: {moment.unix(event.start_date).format("DD-MM-YYYY")}</p>
-                            <p>End: {moment.unix(event.start_date).format("DD-MM-YYYY")}</p>
+                            <p>Start: {moment.unix(event.start_date).format("DD-MMM-YYYY")}</p>
+                            <p>End: {moment.unix(event.start_date).format("DD-MMM-YYYY")}</p>
                             <p>{event.description}</p>
                         </div>
                     );

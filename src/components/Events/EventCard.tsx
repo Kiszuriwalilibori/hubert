@@ -6,7 +6,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+import { useCallback } from "react";
+import moment from "moment";
 import { Event } from "types";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
@@ -14,9 +15,6 @@ import Collapse from "@mui/material/Collapse";
 import { useSelector } from "react-redux";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
 import { useDispatchAction } from "hooks";
-import { useCallback } from "react";
-import { convertEpochToSpecificTimezone } from "./utils";
-import moment from "moment";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -51,9 +49,10 @@ export default function EventCard(props: Props) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardMedia sx={{ height: 140 }} image={image} title={name} />
+            <CardMedia sx={{ height: 214 }} image={image} title={name} />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     {name}

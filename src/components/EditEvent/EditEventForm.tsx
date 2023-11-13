@@ -60,8 +60,8 @@ export const EditEventForm = (props: Props) => {
     useEffect(() => {
         let defaultValues = { ...initialData } as any;
 
-        defaultValues.start_date = moment.unix(initialData.start_date).format("YYYY-MM-DD");
-        defaultValues.end_date = moment.unix(initialData.end_date).format("YYYY-MM-DD");
+        defaultValues.start_date = moment.unix(initialData.start_date).format("DD-MM-YYYY");
+        defaultValues.end_date = moment.unix(initialData.end_date).format("DD-MM-YYYY");
 
         reset({ ...defaultValues });
     }, []);

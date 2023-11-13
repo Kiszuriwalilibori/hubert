@@ -27,7 +27,7 @@ function YouTubePage() {
                 {isAdmin && (
                     <BasicButton
                         disabled={!isAdmin}
-                        className="button--login edit"
+                        className="button--login edit no-printable"
                         type="button"
                         aria-label="login"
                         onClick={showManageCategoriesModal}
@@ -37,7 +37,7 @@ function YouTubePage() {
                 {isAdmin && (
                     <BasicButton
                         disabled={!isAdmin}
-                        className="button--login add"
+                        className="button--login add no-printable"
                         aria-label="Add event"
                         onClick={showAddEventModal}
                         children="Add event"

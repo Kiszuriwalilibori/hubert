@@ -409,6 +409,35 @@ textarea {
   z-index: 2000;
 }
 
+@media print {
+  .no-printable {
+    display: none;
+  }
+}
+@media print {
+  .no-printable {
+    display: none;
+  }
+}
+.events-printable {
+  display: none;
+}
+@media print {
+  .events-printable {
+    display: block;
+  }
+  .events-printable .event-printable > * {
+    padding: 8px 0 8px 0;
+    font-family: "Times New Roman", serif;
+    font-size: 16px;
+    text-align: start;
+  }
+  .events-printable .event-printable > h2 {
+    font-size: 20;
+    text-align: center;
+  }
+}
+
 .vertical-timeline-corrected {
   width: 400px;
 }

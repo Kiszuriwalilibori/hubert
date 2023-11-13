@@ -7,6 +7,14 @@ import { HashRouter as Router } from "react-router-dom";
 import React from "react";
 import { SnackbarProvider } from "notistack";
 import logReducer from "reduxware/reducers/logReducer";
+import { MaterialDesignContent } from "notistack";
+import { styled } from "@mui/material/styles";
+
+const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
+    "@media print": {
+        display: "none",
+    },
+}));
 
 const rootReducer = combineReducers({
     admin: adminReducer,
@@ -23,6 +31,10 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         <Provider store={store}>
             <SnackbarProvider
                 maxSnack={3}
+                Components={{
+                    success: StyledMaterialDesignContent,
+                    info: StyledMaterialDesignContent,
+                }}
                 anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "center",

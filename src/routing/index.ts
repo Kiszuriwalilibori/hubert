@@ -1,7 +1,7 @@
 import { PathKeys } from "types";
 
 const Paths: { [key in PathKeys]: string } = {
-    youtube: "/youtube",
+    events: "/events",
     landing: "/",
     nopage: "*",
 };

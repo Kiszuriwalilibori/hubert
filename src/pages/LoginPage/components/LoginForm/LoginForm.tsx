@@ -26,7 +26,7 @@ export const LogInForm = (props: Props) => {
 
         if (password === process.env.REACT_APP_PASSWORD || password === process.env.REACT_APP_USER_PASSWORD) {
             logUser();
-            history(paths.youtube);
+            history(paths.events);
             showMessage.success("You have successfully logged");
             if (password != process.env.REACT_APP_PASSWORD) {
                 showMessage.info("Your status is USER");
@@ -36,22 +36,9 @@ export const LogInForm = (props: Props) => {
         }
         if (password === process.env.REACT_APP_PASSWORD) {
             setIsAdmin(true);
-            history(paths.youtube);
+            history(paths.events);
             showMessage.info("Your status is ADMIN");
         }
-
-        // if (password === process.env.REACT_APP_PASSWORD || password === process.env.REACT_APP_USER_PASSWORD) {
-        //     logUser();
-        //     history(paths.youtube);
-        //     showMessage.success("You have successfully logged");
-        // } else {
-        //     setError();
-        // }
-        // if (password === process.env.REACT_APP_PASSWORD) {
-        //     setIsAdmin(true);
-        //     history(paths.youtube);
-        //     showMessage.info("Your status is ADMIN");
-        // }
 
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

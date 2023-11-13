@@ -11,7 +11,7 @@ import { useHandleConnectionStatus } from "hooks";
 
 import "./App.css";
 
-const YouTubePage = loadable(() => import("pages/YouTubePage"));
+const EventsPage = loadable(() => import("pages/EventsPage"));
 const NoPage = loadable(() => import("pages/NoPage"));
 
 function App() {
@@ -23,10 +23,10 @@ function App() {
                 <Routes>
                     <Route path={Paths.landing} element={<LoginPage />} />
                     <Route
-                        path={Paths.youtube}
+                        path={Paths.events}
                         element={
                             <ProtectedRoute>
-                                <YouTubePage />
+                                <EventsPage />
                             </ProtectedRoute>
                         }
                     />

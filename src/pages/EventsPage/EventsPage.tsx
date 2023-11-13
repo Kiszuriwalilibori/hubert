@@ -5,7 +5,7 @@ import { AddEvent, BasicButton, EditEvent, Events, ManageCategories } from "comp
 import { useBoolean } from "hooks";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
 
-function YouTubePage() {
+function EventsPage() {
     const isAdmin = useSelector(isAdminSelector);
     const [isAddEventActive, showAddEventModal, hideAddEvent] = useBoolean(false);
     const [isManageCategoriesActive, showManageCategoriesModal, hideManageCategoriesModal] = useBoolean(false);
@@ -52,4 +52,4 @@ function YouTubePage() {
     );
 }
 
-export default YouTubePage;
+export default EventsPage;

@@ -1,4 +1,4 @@
-import YouTubePage from "./YouTubePage";
+import EventsPage from "./EventsPage";
 import LoginPage from "./LoginPage";
 
-export { YouTubePage, LoginPage };
+export { EventsPage, LoginPage };

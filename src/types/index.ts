@@ -22,6 +22,6 @@ interface Category {
 }
 type Categories = Category[];
 
-type PathKeys = "youtube" | "landing" | "nopage";
+type PathKeys = "events" | "landing" | "nopage";
 
 export type { CategoryColor, RootStateType, Events, Category, Categories, PathKeys };

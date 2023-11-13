@@ -52,7 +52,7 @@ export default function EventCard(props: Props) {
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardMedia sx={{ height: 214 }} image={image} title={name} />
+            <CardMedia sx={{ height: 214 }} image={image} title={name} aria-label={name} />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     {name}

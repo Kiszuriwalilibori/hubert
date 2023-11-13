@@ -14,6 +14,9 @@ const Events = () => {
 
     return (
         <>
+            <header className="header">
+                <h1 className="header__content">Time Axis</h1>
+            </header>
             <VerticalTimeline layout={"1-column-left"} className="vertical-timeline-corrected no-printable">
                 {events.map((event: Event) => {
                     const styles = getStyles(colors, event);

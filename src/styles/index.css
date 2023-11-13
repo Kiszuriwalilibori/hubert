@@ -324,7 +324,7 @@ textarea {
   align-items: center;
 }
 
-.flexbox-row-centered, .button--search, .button--alarm {
+.flexbox-row-centered, .page--login, .not-logged, .button--search, .button--alarm {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -349,7 +349,7 @@ textarea {
   color: var(--text-color-secondary);
 }
 
-.full-page {
+.full-page, .page--login, .not-logged {
   position: fixed;
   z-index: 999;
   margin: auto;
@@ -359,7 +359,7 @@ textarea {
   right: 0;
 }
 
-.shout-text {
+.shout-text, .not-logged {
   font-size: 48px;
   color: var(--ytd-alarm-color);
 }
@@ -660,4 +660,16 @@ textarea {
   color: var(--ytd-alarm-color);
   font-size: x-small;
   font-style: italic;
+}
+
+.page--none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: xx-large;
+}
+
+.page--login {
+  background-color: #c1c5c6;
 }

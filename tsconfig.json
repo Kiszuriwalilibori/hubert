@@ -28,6 +28,7 @@
             "images/*": ["images/*"],
             "fixtures": ["fixtures"],
             "routes": ["routes"],
+            "pages": ["pages"],
             "reduxware": ["reduxware"]
         }
     },

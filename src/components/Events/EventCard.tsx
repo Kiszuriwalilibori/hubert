@@ -67,9 +67,11 @@ export default function EventCard(props: Props) {
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: "center" }}>
-                <Button variant="contained" color="error" disabled={!isAdmin} size="small">
-                    Remove
-                </Button>
+                {isAdmin && (
+                    <Button variant="contained" color="error" disabled={!isAdmin} size="small">
+                        Remove
+                    </Button>
+                )}
 
                 <ExpandMore
                     expand={expanded}
@@ -79,16 +81,11 @@ export default function EventCard(props: Props) {
                 >
                     <ExpandMoreIcon />
                 </ExpandMore>
-                <Button
-                    // onClick={() => setIsEditEventActive(true)}
-                    onClick={handleEdit}
-                    variant="contained"
-                    color="warning"
-                    disabled={!isAdmin}
-                    size="small"
-                >
-                    Edit
-                </Button>
+                {isAdmin && (
+                    <Button onClick={handleEdit} variant="contained" color="warning" disabled={!isAdmin} size="small">
+                        Edit
+                    </Button>
+                )}
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>

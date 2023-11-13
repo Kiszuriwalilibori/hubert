@@ -3,9 +3,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { Provider } from "react-redux";
 import { adminReducer, categoriesReducer, onlineReducer, eventReducer, editEventReducer } from "../reduxware/reducers";
-
+import { HashRouter as Router } from "react-router-dom";
 import React from "react";
 import { SnackbarProvider } from "notistack";
+import logReducer from "reduxware/reducers/logReducer";
 
 const rootReducer = combineReducers({
     admin: adminReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     events: eventReducer,
     editEvent: editEventReducer,
     categories: categoriesReducer,
+    log: logReducer,
 });
 
 export const store = configureStore({ reducer: rootReducer });
@@ -26,7 +28,7 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                     horizontal: "center",
                 }}
             >
-                {children}
+                <Router>{children}</Router>
             </SnackbarProvider>
         </Provider>
     );

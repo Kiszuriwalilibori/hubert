@@ -1,0 +1,5 @@
+.not-logged {
+    @extend .flexbox-row-centered;
+    @extend .full-page;
+    @extend .shout-text;
+}

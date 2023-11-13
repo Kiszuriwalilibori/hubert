@@ -1,14 +1,5 @@
 import { RootStateType } from "components/AppProvider";
 
-// export interface Event {
-//     id: string;
-//     name: string;
-//     date: { start: number; end: number };
-//     description: string;
-//     image: string;
-//     category: string;
-// }
-
 export interface Event {
     id: string;
     name: string;
@@ -31,4 +22,6 @@ interface Category {
 }
 type Categories = Category[];
 
-export type { CategoryColor, RootStateType, Events, Category, Categories };
+type PathKeys = "youtube" | "landing" | "nopage";
+
+export type { CategoryColor, RootStateType, Events, Category, Categories, PathKeys };

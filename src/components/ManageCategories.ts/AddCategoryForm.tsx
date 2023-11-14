@@ -18,7 +18,7 @@ export const AddCategoryForm = () => {
             category: data.category,
         };
 
-        // todo w tym miejscu należy wyslać dane
+        // todo w tym miejscu należy wyslać nową kategorię na serwer, pobrać zaktualizowane kategorie, zintegrować z eventami i zaktualizować jedno i drugie
     };
 
     const {

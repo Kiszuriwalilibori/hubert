@@ -21,7 +21,7 @@ interface Props {
 export const EditEventForm = (props: Props) => {
     const { setError, clearError, handleClose, initialData } = props;
     const categories = useSelector(getCategoriesSelector);
-
+    const { setEvents } = useDispatchAction();
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
 
@@ -40,7 +40,7 @@ export const EditEventForm = (props: Props) => {
 
         handleClose();
 
-        // todo w tym miejscu należy wyslać dane
+        // todo w tym miejscu należy wyslać newEvent na serwer, pobrać zaktualizowane eventy i zaktualizować lokalnie przez setEvents
     };
 
     const {

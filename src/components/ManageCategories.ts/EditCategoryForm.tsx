@@ -15,14 +15,15 @@ export const EditCategoryForm = (props: Props) => {
     const { category } = props;
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
-
+    const { setCategories } = useDispatchAction();
     const onFormSubmit = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
         const newCategory = {
             category: data.category,
         };
 
-        // todo w tym miejscu należy wyslać dane
+        // todo w tym miejscu należy wyslać kategorie na serwer i zaktualizować lokalnie
+        //
     };
 
     const {

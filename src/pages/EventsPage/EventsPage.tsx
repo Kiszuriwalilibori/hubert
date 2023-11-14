@@ -2,14 +2,20 @@ import Stack from "@mui/material/Stack";
 import { useSelector } from "react-redux";
 
 import { AddEvent, BasicButton, EditEvent, Events, ManageCategories } from "components";
-import { useBoolean } from "hooks";
+import { useBoolean, useDispatchAction } from "hooks";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
+import { useEffect } from "react";
 
 function EventsPage() {
     const isAdmin = useSelector(isAdminSelector);
     const [isAddEventActive, showAddEventModal, hideAddEvent] = useBoolean(false);
     const [isManageCategoriesActive, showManageCategoriesModal, hideManageCategoriesModal] = useBoolean(false);
+    const { setEvents, setCategories } = useDispatchAction();
 
+    useEffect(() => {
+        //todo tu ma być skrypt pobierający dane tj. eventy i kategorie
+        // przy sukcesie zintegrować kategorie z danymi i wykonać setEvents i setCategories z tymi danymi
+    }, []);
     return (
         <>
             <Stack

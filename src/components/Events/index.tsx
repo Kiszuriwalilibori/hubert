@@ -7,6 +7,7 @@ import { Event } from "types";
 import "react-vertical-timeline-component/style.min.css";
 import EventCard from "./EventCard";
 import { createColors, getStyles } from "./utils";
+import uuid from "react-uuid";
 
 const Events = () => {
     const events = useSelector(selectSortedEvents);
@@ -37,7 +38,7 @@ const Events = () => {
             <div className="events-printable">
                 {events.map((event: Event) => {
                     return (
-                        <div className="event-printable">
+                        <div className="event-printable" key={uuid()}>
                             <h2>{event.name}</h2>
                             <p>Kategoria: {event.category}</p>
                             <p>Start: {moment.unix(event.start_date).format("DD-MMM-YYYY")}</p>

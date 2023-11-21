@@ -19,7 +19,7 @@ export const CategoryListItem = (props: Props) => {
 
     return (
         <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between", alignItems: "center" }}>
-            <span>{category.name}</span>
+            <span>{category.Name}</span>
             <Stack direction="row" spacing={2} sx={{ p: 1 }}>
                 <Button onClick={handleDelete} variant="outlined" size="small" color="error" startIcon={<DeleteIcon />}>
                     Delete

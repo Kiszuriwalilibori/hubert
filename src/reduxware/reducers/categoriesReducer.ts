@@ -5,12 +5,14 @@ import { Categories, RootStateType } from "types/index";
 const initialState = {
     categories: [
         {
-            id: 1,
-            name: "Event",
+            Id: 1,
+            Name: "Event",
+            Color: "#E25141",
         },
         {
-            id: 2,
-            name: "Meeting",
+            Id: 2,
+            Name: "Meeting",
+            Color: "#4153AF",
         },
     ],
 };

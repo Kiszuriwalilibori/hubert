@@ -17,8 +17,9 @@ interface CategoryColor {
 }
 
 interface Category {
-    id: number;
-    name: string;
+    Id: number;
+    Name: string;
+    Color: string;
 }
 type Categories = Category[];
 

@@ -15,8 +15,10 @@ export const AddCategoryForm = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
 
         const newCategory = {
-            category: data.category,
+            Name: data.category,
+            Color: data.color,
         };
+        console.log("newly created category", newCategory);
 
         // todo w tym miejscu należy wyslać nową kategorię na serwer, pobrać zaktualizowane kategorie, zintegrować z eventami i zaktualizować jedno i drugie
     };
@@ -55,6 +57,29 @@ export const AddCategoryForm = () => {
                     </span>
                 )}
                 {errors.category && errors.category.type === "pattern" && (
+                    <span className="field__hint">{messages.pattern}</span>
+                )}
+            </label>
+
+            <label className="field field--300">
+                <p className="field__label">color</p>
+                <input
+                    className="field__input"
+                    autoComplete="color"
+                    autoCorrect="off"
+                    autoFocus
+                    type="text"
+                    tabIndex={0}
+                    placeholder="Type category color  HEX here..."
+                    {...register("color", validators.color)}
+                />
+                {errors.color && errors.color.type === "required" && (
+                    <span className="field__hint">
+                        {messages.required}
+                        {criterions.color.required}
+                    </span>
+                )}
+                {errors.color && errors.color.type === "pattern" && (
                     <span className="field__hint">{messages.pattern}</span>
                 )}
             </label>

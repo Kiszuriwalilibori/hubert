@@ -1,8 +1,6 @@
 import { RegisterOptions } from "react-hook-form";
-
 export type Messages = { [key in keyof RegisterOptions]?: string };
-
-type Fields = "image" | "name" | "description" | "start_date" | "end_date" | "category";
+type Fields = "image" | "name" | "description" | "start_date" | "end_date" | "category" | "color";
 
 type Validator = { [key in keyof RegisterOptions]?: any };
 export type Validators = {
@@ -28,6 +26,10 @@ export const criterions = {
         required: true,
         pattern: /^.*[a-zA-Z0-9]+.*$/,
     },
+    color: {
+        required: true,
+        pattern: /#([a-f0-9]{3}|[a-f0-9]{4}(?:[a-f0-9]{2}){0,2})\b$/i,
+    },
 
     image: {
         required: true,
@@ -48,4 +50,5 @@ export const validators: Validators = {
     start_date: { ...criterions.start_date },
     end_date: { ...criterions.end_date },
     category: { ...criterions.category },
+    color: { ...criterions.color },
 };

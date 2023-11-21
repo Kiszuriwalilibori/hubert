@@ -127,8 +127,8 @@ export const EditEventForm = (props: Props) => {
                 >
                     {categories.map(category => {
                         return (
-                            <option key={uuid()} value={category.name}>
-                                {category.name}
+                            <option key={uuid()} value={category.Name}>
+                                {category.Name}
                             </option>
                         );
                     })}

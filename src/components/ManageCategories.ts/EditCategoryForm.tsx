@@ -24,7 +24,7 @@ export const EditCategoryForm = (props: Props) => {
             Color: data.color,
             Id: category.Id,
         };
-        console.log("category after edit", newCategory);
+
         // todo w tym miejscu należy wyslać kategorie na serwer i zaktualizować lokalnie
         //
     };

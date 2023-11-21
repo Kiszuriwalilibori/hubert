@@ -26,7 +26,7 @@ const EditEvent = () => {
         <Modal sx={{ outline: 0 }} open={isOpen} onClose={handleClose}>
             <section className="login">
                 <CloseButton closeHandler={handleClose} />
-                <h2 className="login__prompt">Please edit event data</h2>;
+                <h2 className="login__prompt">Please edit event data</h2>
                 {isOnline && (
                     <EditEventForm
                         handleClose={handleClose}

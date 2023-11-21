@@ -29,7 +29,7 @@ export const EditEventForm = (props: Props) => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
 
         const newEvent: Event = {
-            category: data.category,
+            category: categories.find(category => category.Name === data.category)!.Id,
             name: data.name,
             description: data.description,
             image: data.image,
@@ -37,6 +37,8 @@ export const EditEventForm = (props: Props) => {
             start_date: Number(new Date(data.start_date)) / 1000,
             end_date: Number(new Date(data.end_date)) / 1000,
         };
+
+        console.log("editedEvent", newEvent);
 
         handleClose();
 
@@ -59,9 +61,9 @@ export const EditEventForm = (props: Props) => {
 
     useEffect(() => {
         let defaultValues = { ...initialData } as any;
-
-        defaultValues.start_date = moment.unix(initialData.start_date).format("DD-MM-YYYY");
-        defaultValues.end_date = moment.unix(initialData.end_date).format("DD-MM-YYYY");
+        defaultValues.category = categories.find(category => category.Id === initialData.category)?.Name;
+        defaultValues.start_date = moment.unix(initialData.start_date).format("YYYY-MM-DD");
+        defaultValues.end_date = moment.unix(initialData.end_date).format("YYYY-MM-DD");
 
         reset({ ...defaultValues });
     }, []);
@@ -90,29 +92,6 @@ export const EditEventForm = (props: Props) => {
                     <span className="field__hint">{messages.pattern}</span>
                 )}
             </label>
-            {/* category comes here */}
-
-            {/* <label className="field">
-                <p className="field__label">category</p>
-                <input
-                    className="field__input"
-                    autoComplete="category"
-                    autoCorrect="off"
-                    type="text"
-                    tabIndex={0}
-                    placeholder="Type category here..."
-                    {...register("category", validators.category)}
-                />
-                {errors.name && errors.name.type === "required" && (
-                    <span className="field__hint">
-                        {messages.required}
-                        {criterions.name.required}
-                    </span>
-                )}
-                {errors.name && errors.name.type === "pattern" && (
-                    <span className="field__hint">{messages.pattern}</span>
-                )}
-            </label> */}
 
             <label className="field">
                 <p className="field__label">category</p>

@@ -5,16 +5,11 @@ export interface Event {
     name: string;
     description: string;
     image: string;
-    category: string;
+    category: number;
     start_date: number;
     end_date: number;
 }
 type Events = Event[];
-
-interface CategoryColor {
-    category: string;
-    color: string;
-}
 
 interface Category {
     Id: number;
@@ -25,4 +20,4 @@ type Categories = Category[];
 
 type PathKeys = "events" | "landing" | "nopage";
 
-export type { CategoryColor, RootStateType, Events, Category, Categories, PathKeys };
+export type { RootStateType, Events, Category, Categories, PathKeys };

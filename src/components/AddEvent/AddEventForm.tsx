@@ -2,7 +2,6 @@ import { useCallback, useRef } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { useDispatchAction } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
 import { Event } from "types";
@@ -25,16 +24,15 @@ export const AddEventForm = (props: Props) => {
     const onFormSubmit = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
 
-        const newEvent: Event = {
-            category: data.category,
+        const newEvent: Omit<Event, "id"> = {
+            category: +data.category,
             name: data.name,
             description: data.description,
             image: data.image,
-            id: (Math.random() + 1).toString(36).substring(2),
             start_date: Number(new Date(data.start_date)) / 1000,
             end_date: Number(new Date(data.end_date)) / 1000,
         };
-
+        console.log("new Event", newEvent);
         handleClose();
 
         // todo w tym miejscu należy wyslać dane

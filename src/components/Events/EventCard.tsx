@@ -33,9 +33,11 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 interface Props {
     event: Event;
     color: string;
+    categoryName: string | undefined;
 }
 export default function EventCard(props: Props) {
-    const { name, image, start_date, end_date, description, category, id } = props.event;
+    const { name, image, start_date, end_date, description } = props.event;
+    const { categoryName } = props;
 
     const [expanded, setExpanded] = React.useState(false);
     const isAdmin = useSelector(isAdminSelector);
@@ -58,7 +60,7 @@ export default function EventCard(props: Props) {
                     {name}
                 </Typography>
                 <Typography gutterBottom variant="body2" component="div" sx={{ color: props.color }}>
-                    {category}
+                    {categoryName}
                 </Typography>
                 <Typography gutterBottom variant="body1" component="div">
                     {`${moment.unix(start_date).format("DD-MMM-YYYY")} - ${moment

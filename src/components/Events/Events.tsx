@@ -1,21 +1,19 @@
-import { useSelector } from "react-redux";
-import { selectSortedEvents } from "reduxware/selectors";
-import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
+import uuid from "react-uuid";
 import moment from "moment";
-import { Event } from "types";
 
 import "react-vertical-timeline-component/style.min.css";
 import EventCard from "./EventCard";
-import { createColors, getStyles } from "./utils";
-import uuid from "react-uuid";
+
+import { getStyle } from "./utils";
+import { selectSortedEvents } from "reduxware/selectors";
 import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
+import { Event } from "types";
+import { useSelector } from "react-redux";
+import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 
 const Events = () => {
     const events = useSelector(selectSortedEvents);
     const categories = useSelector(getCategoriesSelector);
-    const colors = createColors(events);
-    console.log("colors", colors);
-    console.log("categories", categories);
 
     return (
         <>
@@ -24,8 +22,8 @@ const Events = () => {
             </header>
             <VerticalTimeline layout={"1-column-left"} className="vertical-timeline-corrected no-printable">
                 {events.map((event: Event) => {
-                    const styles = getStyles(colors, event);
-                    console.log(styles);
+                    const styles = getStyle(categories, event);
+                    const category = categories.find(category => category.Id === event.category);
                     return (
                         <VerticalTimelineElement
                             key={event.start_date}
@@ -33,7 +31,11 @@ const Events = () => {
                             contentArrowStyle={styles.arrow}
                             iconStyle={styles.icon}
                         >
-                            <EventCard event={event} color={styles.icon.background as string} />
+                            <EventCard
+                                event={event}
+                                color={styles.icon.background as string}
+                                categoryName={category?.Name}
+                            />
                         </VerticalTimelineElement>
                     );
                 })}

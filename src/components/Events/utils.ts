@@ -25,7 +25,7 @@ export function getStyles(colors: CategoryColor[], event: Event) {
     };
 
     const arrow = {
-        borderRight: "7px solid" + bgr?.color,
+        borderRight: "7px solid " + bgr?.color,
     };
 
     return { icon: icon, arrow: arrow };

@@ -8,10 +8,14 @@ import "react-vertical-timeline-component/style.min.css";
 import EventCard from "./EventCard";
 import { createColors, getStyles } from "./utils";
 import uuid from "react-uuid";
+import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
 
 const Events = () => {
     const events = useSelector(selectSortedEvents);
+    const categories = useSelector(getCategoriesSelector);
     const colors = createColors(events);
+    console.log("colors", colors);
+    console.log("categories", categories);
 
     return (
         <>
@@ -21,7 +25,7 @@ const Events = () => {
             <VerticalTimeline layout={"1-column-left"} className="vertical-timeline-corrected no-printable">
                 {events.map((event: Event) => {
                     const styles = getStyles(colors, event);
-
+                    console.log(styles);
                     return (
                         <VerticalTimelineElement
                             key={event.start_date}

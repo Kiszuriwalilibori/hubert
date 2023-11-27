@@ -2,11 +2,18 @@ import { ReactNode } from "react";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { Provider } from "react-redux";
-import { adminReducer, categoriesReducer, onlineReducer, eventReducer, editEventReducer } from "../reduxware/reducers";
+import {
+    adminReducer,
+    categoriesReducer,
+    onlineReducer,
+    eventReducer,
+    editEventReducer,
+    logReducer,
+} from "../reduxware/reducers";
 import { HashRouter as Router } from "react-router-dom";
 import React from "react";
 import { SnackbarProvider } from "notistack";
-import logReducer from "reduxware/reducers/logReducer";
+
 import { MaterialDesignContent } from "notistack";
 import { styled } from "@mui/material/styles";
 
@@ -30,6 +37,7 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <Provider store={store}>
             <SnackbarProvider
+                preventDuplicate={true}
                 maxSnack={3}
                 Components={{
                     success: StyledMaterialDesignContent,

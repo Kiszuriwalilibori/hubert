@@ -14,7 +14,7 @@ import { styled } from "@mui/material/styles";
 import Collapse from "@mui/material/Collapse";
 import { useSelector } from "react-redux";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
-import { useDispatchAction } from "hooks";
+import { useBoolean, useDispatchAction } from "hooks";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -36,10 +36,11 @@ interface Props {
     categoryName: string | undefined;
 }
 export default function EventCard(props: Props) {
-    const { name, image, start_date, end_date, description } = props.event;
+    const { name, imageURL, start_date, end_date, description } = props.event;
     const { categoryName } = props;
 
     const [expanded, setExpanded] = React.useState(false);
+    const [shouldRemove, forceRemove, ,] = useBoolean(false);
     const isAdmin = useSelector(isAdminSelector);
     const { setIsEditEventActive, setEditEventData } = useDispatchAction();
 
@@ -51,10 +52,10 @@ export default function EventCard(props: Props) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
+    // console.log("should|Remove", shouldRemove);
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardMedia sx={{ height: 214 }} image={image} title={name} aria-label={name} />
+            <CardMedia sx={{ height: 214 }} image={imageURL} title={name} aria-label={name} />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     {name}
@@ -63,14 +64,14 @@ export default function EventCard(props: Props) {
                     {categoryName}
                 </Typography>
                 <Typography gutterBottom variant="body1" component="div">
-                    {`${moment.unix(start_date).format("DD-MMM-YYYY")} - ${moment
-                        .unix(end_date)
+                    {`${moment.unix(start_date / 1000).format("DD-MMM-YYYY")} - ${moment
+                        .unix(end_date / 1000)
                         .format("DD-MMM-YYYY")}`}
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: "center" }}>
                 {isAdmin && (
-                    <Button variant="contained" color="error" disabled={!isAdmin} size="small">
+                    <Button onClick={forceRemove} variant="contained" color="error" disabled={!isAdmin} size="small">
                         Remove
                     </Button>
                 )}

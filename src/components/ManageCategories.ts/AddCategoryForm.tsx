@@ -1,33 +1,44 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { useDispatchAction } from "hooks";
+import { useAxios, useDispatchAction, useMessage } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
-import { Event } from "types";
+import { Categories, Category } from "types";
+import axios, { AxiosRequestConfig } from "axios";
+import { URL_CATEGORIES } from "config";
 
+const newCategoryInitialState = undefined as unknown as Object;
 export const AddCategoryForm = () => {
+    const [newCategory, setNewCategory] = useState(newCategoryInitialState);
+    const showMessage = useMessage();
     const refForm = useRef<HTMLFormElement>(null);
-    const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
+    const { setCategories } = useDispatchAction();
 
     const onFormSubmit = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
-
         const newCategory = {
-            Name: data.category,
-            Color: data.color,
+            name: data.category,
+            color: data.color,
         };
-        console.log("newly created category", newCategory);
 
-        // todo w tym miejscu należy wyslać nową kategorię na serwer, pobrać zaktualizowane kategorie, zintegrować z eventami i zaktualizować jedno i drugie
+        setNewCategory(newCategory);
     };
+
+    const { response, loading, error } = useAxios({
+        method: "POST",
+        url: "categories/create",
+        data: newCategory,
+        shouldWork: Boolean(newCategory),
+    } as unknown as AxiosRequestConfig);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         clearErrors,
+        reset,
     } = useForm();
 
     const handleReset = useCallback(() => {
@@ -35,6 +46,43 @@ export const AddCategoryForm = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (response) {
+            response && showMessage.success("Pomyślnie utworzono kategorię");
+            reset();
+            setNewCategory(newCategoryInitialState);
+
+            axios
+                .get(URL_CATEGORIES)
+                .then(response => {
+                    if (response.statusText === "OK" && response.data) {
+                        const categories = [] as Categories;
+                        (response.data as []).forEach((category: Category) => {
+                            category = (({ id, name, color }) => ({ id, name, color }))(category);
+                            categories.push(category);
+                        });
+
+                        setCategories(categories);
+                    } else {
+                        if (response.statusText !== "OK") {
+                            showMessage.error("Podczas pobierania kategorii wystapił błąd");
+                        } else {
+                            showMessage.error("Brak kategorii do pobrania");
+                        }
+                    }
+                })
+                .catch(error => {
+                    showMessage.error("error");
+                });
+        }
+    }, [JSON.stringify(response)]);
+
+    useEffect(() => {
+        error && showMessage.error(`Podczas próby utworzenia kategorii wystąpił błąd ${error}`);
+        reset();
+        setNewCategory(newCategoryInitialState);
+    }, [JSON.stringify(error)]);
 
     return (
         <form className="login__form" onSubmit={handleSubmit(onFormSubmit)} ref={refForm}>
@@ -84,7 +132,12 @@ export const AddCategoryForm = () => {
                 )}
             </label>
 
-            <BasicButton onClick={blur} className="button--login" type="submit" aria-label="submit" children="Submit" />
+            <BasicButton
+                /*onClick={blur}*/ className="button--login"
+                type="submit"
+                aria-label="submit"
+                children="Submit"
+            />
 
             <BasicButton
                 className="button--login"

@@ -25,14 +25,14 @@ export const AddEventForm = (props: Props) => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
 
         const newEvent: Omit<Event, "id"> = {
-            category: +data.category,
+            categoryId: +data.category,
             name: data.name,
             description: data.description,
-            image: data.image,
+            imageURL: data.image,
             start_date: Number(new Date(data.start_date)) / 1000,
             end_date: Number(new Date(data.end_date)) / 1000,
         };
-        console.log("new Event", newEvent);
+        // console.log("new Event", newEvent);
         handleClose();
 
         // todo w tym miejscu należy wyslać dane
@@ -88,8 +88,8 @@ export const AddEventForm = (props: Props) => {
                 >
                     {categories.map(category => {
                         return (
-                            <option key={uuid()} value={category.Id}>
-                                {category.Name}
+                            <option key={uuid()} value={category.id}>
+                                {category.name}
                             </option>
                         );
                     })}

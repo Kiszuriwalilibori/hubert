@@ -9,3 +9,5 @@ export const setEditEventData = createAction<Event>("EDIT_EVENT_DATA_SET");
 export const setCategories = createAction<Categories>("CATEGORIES_SET");
 export const logUser = createAction("USER_LOGIN");
 export const logOutUser = createAction("USER_LOGOUT");
+export const setShouldUpdateCategories = createAction<boolean>("SHOULD_UPDATE_CATEGORIES_SET");
+export const setShouldUpdateEvents = createAction<boolean>("SHOULD_UPDATE_EVENTS_SET");

@@ -1,21 +1,75 @@
 import Stack from "@mui/material/Stack";
+
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { AxiosRequestConfig } from "axios";
 
 import { AddEvent, BasicButton, EditEvent, Events, ManageCategories } from "components";
-import { useBoolean, useDispatchAction } from "hooks";
+import { useAxios, useBoolean, useDispatchAction, useMessage } from "hooks";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
-import { useEffect } from "react";
+import { sqlDateToEpoch } from "utilityFunctions";
+import { Category, Event } from "types";
 
 function EventsPage() {
     const isAdmin = useSelector(isAdminSelector);
     const [isAddEventActive, showAddEventModal, hideAddEvent] = useBoolean(false);
     const [isManageCategoriesActive, showManageCategoriesModal, hideManageCategoriesModal] = useBoolean(false);
     const { setEvents, setCategories } = useDispatchAction();
+    const showMessage = useMessage();
+
+    const {
+        response: responseCategories,
+        loading: loadingCategories,
+        error: errorCategories,
+    } = useAxios({
+        method: "GET",
+        url: "categories",
+        data: { foo: "categories" },
+    } as unknown as AxiosRequestConfig);
+
+    const {
+        response: responseEvents,
+        loading: loadingEvents,
+        error: errorEvents,
+    } = useAxios({
+        method: "GET",
+        url: "events",
+        data: { foo: "events" },
+    } as unknown as AxiosRequestConfig);
 
     useEffect(() => {
-        //todo tu ma być skrypt pobierający dane tj. eventy i kategorie
-        // przy sukcesie zintegrować kategorie z danymi i wykonać setEvents i setCategories z tymi danymi
-    }, []);
+        responseCategories &&
+            (responseCategories as []).forEach((category: Category) => {
+                category = (({ id, name, color }) => ({ id, name, color }))(category);
+            });
+
+        responseCategories && setCategories(responseCategories);
+    }, [responseCategories]);
+
+    useEffect(() => {
+        const localEvents = [] as Event[];
+        responseEvents &&
+            (responseEvents as []).forEach((event: any) => {
+                const newEvent: Event = {
+                    start_date: sqlDateToEpoch(event.startDate),
+                    end_date: sqlDateToEpoch(event.endDate),
+                    id: event.id,
+                    categoryId: event.categoryId,
+                    imageURL: event.imageURL,
+                    description: event.description,
+                    name: event.name,
+                };
+
+                localEvents.push(newEvent);
+            });
+
+        localEvents && setEvents(localEvents);
+    }, [responseEvents]);
+
+    errorEvents && showMessage.error("error fetching events " + errorEvents.message);
+    errorCategories && showMessage.error("error fetching categories " + errorCategories.message);
+    // (loadingEvents || loadingCategories) && console.log("loading");
+
     return (
         <>
             <Stack

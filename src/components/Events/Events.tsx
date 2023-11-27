@@ -23,7 +23,7 @@ const Events = () => {
             <VerticalTimeline layout={"1-column-left"} className="vertical-timeline-corrected no-printable">
                 {events.map((event: Event) => {
                     const styles = getStyle(categories, event);
-                    const category = categories.find(category => category.Id === event.category);
+                    const category = categories.find(category => category.id === event.categoryId);
                     return (
                         <VerticalTimelineElement
                             key={event.start_date}
@@ -34,7 +34,7 @@ const Events = () => {
                             <EventCard
                                 event={event}
                                 color={styles.icon.background as string}
-                                categoryName={category?.Name}
+                                categoryName={category?.name}
                             />
                         </VerticalTimelineElement>
                     );
@@ -46,7 +46,7 @@ const Events = () => {
                     return (
                         <div className="event-printable" key={uuid()}>
                             <h2>{event.name}</h2>
-                            <p>Kategoria: {event.category}</p>
+                            <p>Kategoria: {event.categoryId}</p>
                             <p>Start: {moment.unix(event.start_date).format("DD-MMM-YYYY")}</p>
                             <p>End: {moment.unix(event.start_date).format("DD-MMM-YYYY")}</p>
                             <p>{event.description}</p>

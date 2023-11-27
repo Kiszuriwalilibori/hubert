@@ -5,13 +5,15 @@ import { Category } from "types";
 import uuid from "react-uuid";
 import EditCategoryForm from "./EditCategoryForm";
 import { useState } from "react";
-import { Divider, Stack } from "@mui/material";
+import { Box, Divider, Stack } from "@mui/material";
 
 export const CategoriesList = () => {
     const categories = useSelector(getCategoriesSelector);
-    const [editedCategory, setEditedCategory] = useState(undefined as unknown as Category);
+
+    const [editedCategory, setEditedCategory] = useState<undefined | Category>(undefined);
 
     const handleEdit = (category: Category) => setEditedCategory(category);
+    const hideForm = () => setEditedCategory(undefined);
 
     return (
         <Stack divider={<Divider orientation="horizontal" flexItem sx={{ marginBottom: 2 }} />} spacing={2}>
@@ -20,7 +22,7 @@ export const CategoriesList = () => {
                     return <CategoriesListItem handleEdit={handleEdit} key={uuid()} category={category} />;
                 })}
             </>
-            {editedCategory && <EditCategoryForm category={editedCategory} />}
+            {editedCategory && <EditCategoryForm category={editedCategory} handleClose={hideForm} />}
         </Stack>
     );
 };

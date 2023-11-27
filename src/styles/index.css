@@ -409,6 +409,11 @@ textarea {
   z-index: 2000;
 }
 
+.tabPanel {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
 @media print {
   .no-printable {
     display: none;

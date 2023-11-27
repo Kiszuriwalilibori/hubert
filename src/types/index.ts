@@ -4,17 +4,17 @@ export interface Event {
     id: string;
     name: string;
     description: string;
-    image: string;
-    category: number;
+    imageURL: string;
+    categoryId: number;
     start_date: number;
     end_date: number;
 }
 type Events = Event[];
 
 interface Category {
-    Id: number;
-    Name: string;
-    Color: string;
+    id: number;
+    name: string;
+    color: string;
 }
 type Categories = Category[];
 

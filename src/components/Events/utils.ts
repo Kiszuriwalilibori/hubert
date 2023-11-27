@@ -1,15 +1,15 @@
 import { Event, Categories } from "types";
 
 export function getStyle(categories: Categories, event: Event) {
-    const category = categories.find(category => category.Id === event.category);
+    const category = categories.find(category => category.id === event.categoryId);
 
     const icon = {
-        background: category ? category.Color : "black",
+        background: category ? category.color : "black",
         color: "#fff",
     };
 
     const arrow = {
-        borderRight: "7px solid " + (category ? category.Color : "black"),
+        borderRight: "7px solid " + (category ? category.color : "black"),
     };
 
     return { icon: icon, arrow: arrow };

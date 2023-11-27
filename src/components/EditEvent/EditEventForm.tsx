@@ -29,10 +29,10 @@ export const EditEventForm = (props: Props) => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
 
         const newEvent: Event = {
-            category: categories.find(category => category.Name === data.category)!.Id,
+            categoryId: categories.find(category => category.name === data.category)!.id,
             name: data.name,
             description: data.description,
-            image: data.image,
+            imageURL: data.image,
             id: initialData.id,
             start_date: Number(new Date(data.start_date)) / 1000,
             end_date: Number(new Date(data.end_date)) / 1000,
@@ -61,7 +61,7 @@ export const EditEventForm = (props: Props) => {
 
     useEffect(() => {
         let defaultValues = { ...initialData } as any;
-        defaultValues.category = categories.find(category => category.Id === initialData.category)?.Name;
+        defaultValues.category = categories.find(category => category.id === initialData.categoryId)?.name;
         defaultValues.start_date = moment.unix(initialData.start_date).format("YYYY-MM-DD");
         defaultValues.end_date = moment.unix(initialData.end_date).format("YYYY-MM-DD");
 
@@ -100,14 +100,14 @@ export const EditEventForm = (props: Props) => {
                     autoComplete="category"
                     autoCorrect="off"
                     tabIndex={0}
-                    defaultValue={initialData.category}
+                    defaultValue={initialData.categoryId}
                     placeholder="Type category here..."
                     {...register("category", validators.category)}
                 >
                     {categories.map(category => {
                         return (
-                            <option key={uuid()} value={category.Name}>
-                                {category.Name}
+                            <option key={uuid()} value={category.name}>
+                                {category.name}
                             </option>
                         );
                     })}

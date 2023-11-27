@@ -50,7 +50,6 @@ function EventsPage() {
         const localEvents = [] as Event[];
         responseEvents &&
             (responseEvents as []).forEach((event: any) => {
-                console.log("raw event coming", event);
                 const newEvent: Event = {
                     start_date: sqlDateToEpoch(event.startDate),
                     end_date: sqlDateToEpoch(event.endDate),

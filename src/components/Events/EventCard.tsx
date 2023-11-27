@@ -8,13 +8,16 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useCallback } from "react";
 import moment from "moment";
-import { Event } from "types";
+import { Event, Events } from "types";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Collapse from "@mui/material/Collapse";
 import { useSelector } from "react-redux";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
-import { useBoolean, useDispatchAction } from "hooks";
+import { useAxios, useBoolean, useDispatchAction, useMessage } from "hooks";
+import axios, { AxiosRequestConfig } from "axios";
+import { sqlDateToEpoch } from "utilityFunctions";
+import { URL_EVENTS } from "config";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -36,11 +39,12 @@ interface Props {
     categoryName: string | undefined;
 }
 export default function EventCard(props: Props) {
-    const { name, imageURL, start_date, end_date, description } = props.event;
+    const { name, imageURL, start_date, end_date, description, id } = props.event;
+    const showMessage = useMessage();
+    const { setEvents } = useDispatchAction();
     const { categoryName } = props;
-
+    const [ID, setID] = React.useState<undefined | string>(undefined);
     const [expanded, setExpanded] = React.useState(false);
-    const [shouldRemove, forceRemove, ,] = useBoolean(false);
     const isAdmin = useSelector(isAdminSelector);
     const { setIsEditEventActive, setEditEventData } = useDispatchAction();
 
@@ -52,6 +56,68 @@ export default function EventCard(props: Props) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    React.useEffect(() => {
+        console.log("id", ID);
+    }, [ID]);
+
+    const handleRemove = useCallback(() => {
+        setID(id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const { response, loading, error } = useAxios({
+        method: "DELETE",
+        url: `events/${ID}`,
+        data: ID,
+    } as unknown as AxiosRequestConfig);
+
+    React.useEffect(() => {
+        if (response) {
+            response && showMessage.success("Pomyślnie usunięto wydarzenie");
+
+            setID(undefined);
+
+            axios
+                .get(URL_EVENTS)
+                .then(response => {
+                    if (response.statusText === "OK" && response.data) {
+                        const events = [] as Events;
+                        (response.data as []).forEach((event: any) => {
+                            event = (({ id, name, categoryId, imageURL, description }) => ({
+                                id,
+                                name,
+                                categoryId,
+                                start_date: sqlDateToEpoch(event.startDate),
+                                end_date: sqlDateToEpoch(event.endDate),
+                                imageURL,
+                                description,
+                            }))(event);
+                            events.push(event);
+                        });
+
+                        setEvents(events);
+                    } else {
+                        if (response.statusText !== "OK") {
+                            showMessage.error("Podczas pobierania wydarzeń wystapił błąd");
+                        } else {
+                            showMessage.error("Brak wydarzeń do pobrania");
+                        }
+                    }
+                })
+                .catch(error => {
+                    showMessage.error("error");
+                });
+        }
+    }, [JSON.stringify(response)]);
+
+    React.useEffect(() => {
+        if (error) {
+            showMessage.error(`Podczas próby usunięcia wydarzenia wystąpił błąd ${error}`);
+
+            setID(undefined);
+        }
+    }, [JSON.stringify(error)]);
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -71,7 +137,7 @@ export default function EventCard(props: Props) {
             </CardContent>
             <CardActions sx={{ justifyContent: "center" }}>
                 {isAdmin && (
-                    <Button onClick={forceRemove} variant="contained" color="error" disabled={!isAdmin} size="small">
+                    <Button onClick={handleRemove} variant="contained" color="error" disabled={!isAdmin} size="small">
                         Remove
                     </Button>
                 )}

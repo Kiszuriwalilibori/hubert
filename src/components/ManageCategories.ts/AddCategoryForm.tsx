@@ -30,7 +30,6 @@ export const AddCategoryForm = () => {
         method: "POST",
         url: "categories/create",
         data: newCategory,
-        shouldWork: Boolean(newCategory),
     } as unknown as AxiosRequestConfig);
 
     const {

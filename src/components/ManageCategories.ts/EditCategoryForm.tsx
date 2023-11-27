@@ -38,7 +38,6 @@ export const EditCategoryForm = (props: Props) => {
         url: `categories/${category.id}`,
         data: updatedCategory,
     } as unknown as AxiosRequestConfig);
-    console.log("response", response);
 
     useEffect(() => {
         if (response) {

@@ -9,6 +9,8 @@ export interface Event {
     start_date: number;
     end_date: number;
 }
+
+export type SQL_Event = Omit<Event, "id" | "start_date" | "end_date"> & { start_date: string; end_date: string };
 type Events = Event[];
 
 interface Category {

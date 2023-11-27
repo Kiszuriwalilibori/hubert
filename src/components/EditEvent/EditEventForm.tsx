@@ -38,8 +38,6 @@ export const EditEventForm = (props: Props) => {
             end_date: Number(new Date(data.end_date)) / 1000,
         };
 
-        console.log("editedEvent", newEvent);
-
         handleClose();
 
         // todo w tym miejscu należy wyslać newEvent na serwer, pobrać zaktualizowane eventy i zaktualizować lokalnie przez setEvents

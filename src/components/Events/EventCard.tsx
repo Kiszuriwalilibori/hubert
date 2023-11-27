@@ -52,7 +52,7 @@ export default function EventCard(props: Props) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    // console.log("should|Remove", shouldRemove);
+
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia sx={{ height: 214 }} image={imageURL} title={name} aria-label={name} />

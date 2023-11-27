@@ -1,48 +1,103 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
-import { Event } from "types";
+import { Events } from "types";
 import { useSelector } from "react-redux";
 import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
 import uuid from "react-uuid";
+import moment from "moment";
+import useAxios from "hooks/useAxios";
+import axios, { AxiosRequestConfig } from "axios";
+import useMessage from "hooks/useMessage";
+import { URL_EVENTS } from "config";
+import useDispatchAction from "hooks/useDispatchAction";
+
+import { sqlDateToEpoch } from "utilityFunctions";
 
 interface Props {
     setError: () => void;
     clearError: () => void;
     handleClose: () => void;
 }
-
+const newEventInitialState = undefined as unknown as Object;
 export const AddEventForm = (props: Props) => {
+    const [newEvent, setNewEvent] = useState(newEventInitialState);
     const { setError, clearError, handleClose } = props;
     const categories = useSelector(getCategoriesSelector);
+    const { setEvents } = useDispatchAction();
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
-
+    const showMessage = useMessage();
     const onFormSubmit = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
 
-        const newEvent: Omit<Event, "id"> = {
+        const newEvent: any = {
             categoryId: +data.category,
             name: data.name,
             description: data.description,
             imageURL: data.image,
-            start_date: Number(new Date(data.start_date)) / 1000,
-            end_date: Number(new Date(data.end_date)) / 1000,
+            startDate: moment.unix(Number(new Date(data.start_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
+            endDate: moment.unix(Number(new Date(data.end_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
         };
-        // console.log("new Event", newEvent);
-        handleClose();
 
-        // todo w tym miejscu należy wyslać dane
+        setNewEvent(newEvent);
     };
+
+    const { response, loading, error } = useAxios({
+        method: "POST",
+        url: "events/create",
+        data: newEvent,
+    } as unknown as AxiosRequestConfig);
+
+    useEffect(() => {
+        if (response) {
+            response && showMessage.success("Pomyślnie utworzono wydarzenie");
+            reset();
+            setNewEvent(newEventInitialState);
+            handleClose();
+
+            axios
+                .get(URL_EVENTS)
+                .then(response => {
+                    if (response.statusText === "OK" && response.data) {
+                        const events = [] as Events;
+                        (response.data as []).forEach((event: any) => {
+                            event = (({ id, name, categoryId, imageURL, description }) => ({
+                                id,
+                                name,
+                                categoryId,
+                                start_date: sqlDateToEpoch(event.startDate),
+                                end_date: sqlDateToEpoch(event.endDate),
+                                imageURL,
+                                description,
+                            }))(event);
+                            events.push(event);
+                        });
+
+                        setEvents(events);
+                    } else {
+                        if (response.statusText !== "OK") {
+                            showMessage.error("Podczas pobierania wydarzeń wystapił błąd");
+                        } else {
+                            showMessage.error("Brak wydarzeń do pobrania");
+                        }
+                    }
+                })
+                .catch(error => {
+                    showMessage.error("error");
+                });
+        }
+    }, [JSON.stringify(response)]);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         clearErrors,
+        reset,
     } = useForm();
 
     const handleReset = useCallback(() => {
@@ -50,7 +105,14 @@ export const AddEventForm = (props: Props) => {
         clearError();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    useEffect(() => {
+        if (error) {
+            showMessage.error(`Podczas próby utworzenia wydarzenia wystąpił błąd ${error}`);
+            reset();
+            setNewEvent(newEventInitialState);
+            handleClose();
+        }
+    }, [JSON.stringify(error)]);
     return (
         <form className="login__form" onSubmit={handleSubmit(onFormSubmit)} ref={refForm}>
             <label className="field">

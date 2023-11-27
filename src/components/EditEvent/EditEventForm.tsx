@@ -1,47 +1,94 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { useDispatchAction } from "hooks";
+import { useAxios, useDispatchAction, useMessage } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
-import { Event } from "types";
+import { Event, Events } from "types";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
 import uuid from "react-uuid";
+import axios, { AxiosRequestConfig } from "axios";
+import { URL_EVENTS } from "config";
+import { sqlDateToEpoch } from "utilityFunctions";
 
 interface Props {
-    setError: () => void;
-    clearError: () => void;
     handleClose: () => void;
     initialData: Event;
 }
+const newEventInitialState = undefined as unknown as Object;
 
 export const EditEventForm = (props: Props) => {
-    const { setError, clearError, handleClose, initialData } = props;
+    const { handleClose, initialData } = props;
     const categories = useSelector(getCategoriesSelector);
     const { setEvents } = useDispatchAction();
     const refForm = useRef<HTMLFormElement>(null);
+    const [newEvent, setNewEvent] = useState(newEventInitialState);
+    const showMessage = useMessage();
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
 
     const onFormSubmit = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
 
-        const newEvent: Event = {
+        const newEvent: any = {
             categoryId: categories.find(category => category.name === data.category)!.id,
             name: data.name,
             description: data.description,
             imageURL: data.image,
-            id: initialData.id,
-            start_date: Number(new Date(data.start_date)) / 1000,
-            end_date: Number(new Date(data.end_date)) / 1000,
+            startDate: moment.unix(Number(new Date(data.start_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
+            endDate: moment.unix(Number(new Date(data.end_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
         };
 
-        handleClose();
-
-        // todo w tym miejscu należy wyslać newEvent na serwer, pobrać zaktualizowane eventy i zaktualizować lokalnie przez setEvents
+        setNewEvent(newEvent);
     };
+
+    const { response, loading, error } = useAxios({
+        method: "PUT",
+        url: `events/${initialData.id}`,
+        data: newEvent,
+    } as unknown as AxiosRequestConfig);
+
+    useEffect(() => {
+        if (response) {
+            response && showMessage.success("Pomyślnie zmodyfikowano wydarzenie");
+            reset();
+            setNewEvent(newEventInitialState);
+            handleClose();
+
+            axios
+                .get(URL_EVENTS)
+                .then(response => {
+                    if (response.statusText === "OK" && response.data) {
+                        const events = [] as Events;
+                        (response.data as []).forEach((event: any) => {
+                            event = (({ id, name, categoryId, imageURL, description }) => ({
+                                id,
+                                name,
+                                categoryId,
+                                start_date: sqlDateToEpoch(event.startDate),
+                                end_date: sqlDateToEpoch(event.endDate),
+                                imageURL,
+                                description,
+                            }))(event);
+                            events.push(event);
+                        });
+
+                        setEvents(events);
+                    } else {
+                        if (response.statusText !== "OK") {
+                            showMessage.error("Podczas pobierania wydarzeń wystapił błąd");
+                        } else {
+                            showMessage.error("Brak wydarzeń do pobrania");
+                        }
+                    }
+                })
+                .catch(error => {
+                    showMessage.error("error");
+                });
+        }
+    }, [JSON.stringify(response)]);
 
     const {
         register,
@@ -53,18 +100,28 @@ export const EditEventForm = (props: Props) => {
 
     const handleReset = useCallback(() => {
         clearErrors();
-        clearError();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         let defaultValues = { ...initialData } as any;
         defaultValues.category = categories.find(category => category.id === initialData.categoryId)?.name;
-        defaultValues.start_date = moment.unix(initialData.start_date).format("YYYY-MM-DD");
-        defaultValues.end_date = moment.unix(initialData.end_date).format("YYYY-MM-DD");
+        defaultValues.start_date = moment.unix(initialData.start_date / 1000).format("YYYY-MM-DD");
+        defaultValues.end_date = moment.unix(initialData.end_date / 1000).format("YYYY-MM-DD");
+        defaultValues.image = initialData.imageURL;
 
         reset({ ...defaultValues });
     }, []);
+
+    useEffect(() => {
+        if (error) {
+            showMessage.error(`Podczas próby edycji wydarzenia wystąpił błąd ${error.message}`);
+            reset();
+            setNewEvent(newEventInitialState);
+            handleClose();
+        }
+    }, [JSON.stringify(error)]);
 
     return (
         <form className="login__form" onSubmit={handleSubmit(onFormSubmit)} ref={refForm}>

@@ -26,7 +26,7 @@ const Events = () => {
                     const category = categories.find(category => category.id === event.categoryId);
                     return (
                         <VerticalTimelineElement
-                            key={event.start_date}
+                            key={uuid()}
                             contentStyle={{ background: "transparent" }}
                             contentArrowStyle={styles.arrow}
                             iconStyle={styles.icon}

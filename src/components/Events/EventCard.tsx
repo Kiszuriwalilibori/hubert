@@ -14,7 +14,7 @@ import { styled } from "@mui/material/styles";
 import Collapse from "@mui/material/Collapse";
 import { useSelector } from "react-redux";
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
-import { useAxios, useBoolean, useDispatchAction, useMessage } from "hooks";
+import { useAxios, useDispatchAction, useMessage } from "hooks";
 import axios, { AxiosRequestConfig } from "axios";
 import { sqlDateToEpoch } from "utilityFunctions";
 import { URL_EVENTS } from "config";
@@ -56,10 +56,6 @@ export default function EventCard(props: Props) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
-    React.useEffect(() => {
-        console.log("id", ID);
-    }, [ID]);
 
     const handleRemove = useCallback(() => {
         setID(id);

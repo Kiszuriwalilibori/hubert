@@ -5,7 +5,7 @@ import { Category } from "types";
 import uuid from "react-uuid";
 import EditCategoryForm from "./EditCategoryForm";
 import { useState } from "react";
-import { Box, Divider, Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 
 export const CategoriesList = () => {
     const categories = useSelector(getCategoriesSelector);

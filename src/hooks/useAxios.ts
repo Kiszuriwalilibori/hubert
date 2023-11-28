@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
-axios.defaults.baseURL = "https://18.212.75.172:8080/api/";
+axios.defaults.baseURL = "http://18.212.75.172:8080/api/";
 
 export const useAxios = (axiosParams: AxiosRequestConfig) => {
     const { data } = axiosParams;

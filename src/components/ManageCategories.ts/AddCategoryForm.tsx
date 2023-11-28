@@ -1,20 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-
 import { useForm } from "react-hook-form";
+import { AxiosRequestConfig } from "axios";
 
-import { useAxios, useDispatchAction, useMessage } from "hooks";
+import { useAxios, useMessage, useUpdateCategories } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
-import { Categories, Category } from "types";
-import axios, { AxiosRequestConfig } from "axios";
-import { URL_CATEGORIES } from "config";
 
 const newCategoryInitialState = undefined as unknown as Object;
+
 export const AddCategoryForm = () => {
     const [newCategory, setNewCategory] = useState(newCategoryInitialState);
     const showMessage = useMessage();
+    const updateCategories = useUpdateCategories();
     const refForm = useRef<HTMLFormElement>(null);
-    const { setCategories } = useDispatchAction();
 
     const onFormSubmit = () => {
         const data = Object.fromEntries(new FormData(refForm.current as HTMLFormElement) as any);
@@ -42,7 +40,6 @@ export const AddCategoryForm = () => {
 
     const handleReset = useCallback(() => {
         clearErrors();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -51,29 +48,7 @@ export const AddCategoryForm = () => {
             response && showMessage.success("Pomyślnie utworzono kategorię");
             reset();
             setNewCategory(newCategoryInitialState);
-
-            axios
-                .get(URL_CATEGORIES)
-                .then(response => {
-                    if (response.statusText === "OK" && response.data) {
-                        const categories = [] as Categories;
-                        (response.data as []).forEach((category: Category) => {
-                            category = (({ id, name, color }) => ({ id, name, color }))(category);
-                            categories.push(category);
-                        });
-
-                        setCategories(categories);
-                    } else {
-                        if (response.statusText !== "OK") {
-                            showMessage.error("Podczas pobierania kategorii wystapił błąd");
-                        } else {
-                            showMessage.error("Brak kategorii do pobrania");
-                        }
-                    }
-                })
-                .catch(error => {
-                    showMessage.error("error");
-                });
+            updateCategories();
         }
     }, [JSON.stringify(response)]);
 
@@ -131,12 +106,7 @@ export const AddCategoryForm = () => {
                 )}
             </label>
 
-            <BasicButton
-                /*onClick={blur}*/ className="button--login"
-                type="submit"
-                aria-label="submit"
-                children="Submit"
-            />
+            <BasicButton className="button--login" type="submit" aria-label="submit" children="Submit" />
 
             <BasicButton
                 className="button--login"

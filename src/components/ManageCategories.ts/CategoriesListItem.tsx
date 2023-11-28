@@ -1,14 +1,13 @@
-import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Categories, Category } from "types/index";
-import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+
 import { useCallback, useEffect, useState } from "react";
-import axios, { AxiosRequestConfig } from "axios";
-import useAxios from "hooks/useAxios";
-import { URL_CATEGORIES } from "config";
-import useMessage from "hooks/useMessage";
-import useDispatchAction from "hooks/useDispatchAction";
+import { AxiosRequestConfig } from "axios";
+
+import { Category } from "types";
+import { useAxios, useMessage, useUpdateCategories } from "hooks";
 
 interface Props {
     category: Category;
@@ -16,7 +15,8 @@ interface Props {
 }
 export const CategoryListItem = (props: Props) => {
     const showMessage = useMessage();
-    const { setCategories } = useDispatchAction();
+
+    const updateCategories = useUpdateCategories();
     const { category, handleEdit } = props;
     const [ID, setID] = useState<undefined | number>(undefined);
 
@@ -35,28 +35,7 @@ export const CategoryListItem = (props: Props) => {
         if (response) {
             response && showMessage.success("Pomyślnie usunięto kategorię");
             setID(undefined);
-            axios
-                .get(URL_CATEGORIES)
-                .then(response => {
-                    if (response.statusText === "OK" && response.data) {
-                        const categories = [] as Categories;
-                        (response.data as []).forEach((category: Category) => {
-                            category = (({ id, name, color }) => ({ id, name, color }))(category);
-                            categories.push(category);
-                        });
-
-                        setCategories(categories);
-                    } else {
-                        if (response.statusText !== "OK") {
-                            showMessage.error("Podczas aktualizacji listy kategorii wystąpił błąd");
-                        } else {
-                            showMessage.error("Brak kategorii do pobrania");
-                        }
-                    }
-                })
-                .catch(error => {
-                    showMessage.error(`Podczas aktualizacji listy kategorii wystąpił błąd ${error.message}`);
-                });
+            updateCategories();
         }
     }, [JSON.stringify(response)]);
 

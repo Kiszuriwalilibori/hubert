@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { useAxios, useBoolean, useDispatchAction, useMessage } from "hooks";
+import { useAxios, useBoolean, useDispatchAction, useMessage, useUpdateCategories } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
 import { Categories, Category } from "types";
@@ -19,6 +19,7 @@ export const EditCategoryForm = (props: Props) => {
     const { category, handleClose } = props;
     const refForm = useRef<HTMLFormElement>(null);
     const showMessage = useMessage();
+    const updateCategories = useUpdateCategories();
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
     const { setCategories } = useDispatchAction();
     const [updatedCategory, setUpdatedCategory] = useState<undefined | Object>(newCategoryInitialState);
@@ -44,28 +45,7 @@ export const EditCategoryForm = (props: Props) => {
             response && showMessage.success("Pomyślnie zmodyfikowano kategorię");
             setUpdatedCategory(undefined);
             handleClose();
-            axios
-                .get(URL_CATEGORIES)
-                .then(response => {
-                    if (response.statusText === "OK" && response.data) {
-                        const categories = [] as Categories;
-                        (response.data as []).forEach((category: Category) => {
-                            category = (({ id, name, color }) => ({ id, name, color }))(category);
-                            categories.push(category);
-                        });
-
-                        setCategories(categories);
-                    } else {
-                        if (response.statusText !== "OK") {
-                            showMessage.error("Podczas aktualizacji listy kategorii wystąpił błąd");
-                        } else {
-                            showMessage.error("Brak kategorii do pobrania");
-                        }
-                    }
-                })
-                .catch(error => {
-                    showMessage.error(`Podczas aktualizacji listy kategorii wystąpił błąd ${error.message}`);
-                });
+            updateCategories();
         }
     }, [JSON.stringify(response)]);
 

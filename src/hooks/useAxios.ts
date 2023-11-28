@@ -7,6 +7,7 @@ export const useAxios = (axiosParams: AxiosRequestConfig) => {
     const { data } = axiosParams;
     const [response, setResponse] = useState(undefined);
     const [error, setError] = useState(undefined as unknown as AxiosError);
+
     const [loading, setLoading] = useState(true);
 
     const fetchData = async (params: AxiosRequestConfig) => {

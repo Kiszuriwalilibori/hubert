@@ -7,18 +7,20 @@ import { useCallback, useEffect, useState } from "react";
 import { AxiosRequestConfig } from "axios";
 
 import { Category } from "types";
-import { useAxios, useMessage, useUpdateCategories } from "hooks";
+import { useAxios, useMessage, useUpdateCategories, useUpdateEvents } from "hooks";
+import Tooltip from "@mui/material/Tooltip";
 
 interface Props {
     category: Category;
     handleEdit: (category: Category) => void;
 }
 export const CategoryListItem = (props: Props) => {
-    const showMessage = useMessage();
-
-    const updateCategories = useUpdateCategories();
     const { category, handleEdit } = props;
     const [ID, setID] = useState<undefined | number>(undefined);
+
+    const showMessage = useMessage();
+    const updateCategories = useUpdateCategories();
+    const updateEvents = useUpdateEvents();
 
     const handleRemove = useCallback(() => {
         setID(category.id);
@@ -36,6 +38,7 @@ export const CategoryListItem = (props: Props) => {
             response && showMessage.success("Pomyślnie usunięto kategorię");
             setID(undefined);
             updateCategories();
+            updateEvents();
         }
     }, [JSON.stringify(response)]);
 
@@ -48,9 +51,17 @@ export const CategoryListItem = (props: Props) => {
         <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between", alignItems: "center" }}>
             <span>{category.name}</span>
             <Stack direction="row" spacing={2} sx={{ p: 1 }}>
-                <Button onClick={handleRemove} variant="outlined" size="small" color="error" startIcon={<DeleteIcon />}>
-                    Delete
-                </Button>
+                <Tooltip title="Usuwa kategorię i WSZYSTKIE WYDARZENIA  z tą kategorią" placement="top">
+                    <Button
+                        onClick={handleRemove}
+                        variant="outlined"
+                        size="small"
+                        color="error"
+                        startIcon={<DeleteIcon />}
+                    >
+                        Delete
+                    </Button>
+                </Tooltip>
                 <Button
                     onClick={() => handleEdit(category)}
                     variant="outlined"

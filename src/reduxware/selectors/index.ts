@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { getAllEvents } from "reduxware/reducers/eventReducer";
-import { Events, Event } from "types/index";
+import { Events, Event } from "types";
 
 function compareEvents(a: Event, b: Event) {
     if (a.start_date < b.start_date) {

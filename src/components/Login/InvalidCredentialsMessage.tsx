@@ -4,7 +4,7 @@ import Fade from "@mui/material/Fade";
 interface Props {
     isError: boolean;
 }
-const text = "- - - Invalid credentials - - -";
+const text = "- - - Błędne dane logowania - - -";
 export const InvalidCredentialsMessage = (props: Props) => {
     const { isError } = props;
     return (

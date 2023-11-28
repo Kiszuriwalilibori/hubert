@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { useAxios, useDispatchAction, useMessage } from "hooks";
+import { useAxios, useDispatchAction, useMessage, useUpdateEvents } from "hooks";
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
 import { Event, Events } from "types";
@@ -12,7 +12,7 @@ import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
 import uuid from "react-uuid";
 import axios, { AxiosRequestConfig } from "axios";
 import { URL_EVENTS } from "config";
-import { sqlDateToEpoch } from "utilityFunctions";
+import { formDateToSQL, sqlDateToEpoch } from "utilityFunctions";
 
 interface Props {
     handleClose: () => void;
@@ -27,6 +27,7 @@ export const EditEventForm = (props: Props) => {
     const refForm = useRef<HTMLFormElement>(null);
     const [newEvent, setNewEvent] = useState(newEventInitialState);
     const showMessage = useMessage();
+    const updateEvents = useUpdateEvents();
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
 
     const onFormSubmit = () => {
@@ -37,8 +38,8 @@ export const EditEventForm = (props: Props) => {
             name: data.name,
             description: data.description,
             imageURL: data.image,
-            startDate: moment.unix(Number(new Date(data.start_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
-            endDate: moment.unix(Number(new Date(data.end_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
+            startDate: formDateToSQL(data.start_date),
+            endDate: formDateToSQL(data.end_date),
         };
 
         setNewEvent(newEvent);
@@ -55,38 +56,8 @@ export const EditEventForm = (props: Props) => {
             response && showMessage.success("Pomyślnie zmodyfikowano wydarzenie");
             reset();
             setNewEvent(newEventInitialState);
+            updateEvents();
             handleClose();
-
-            axios
-                .get(URL_EVENTS)
-                .then(response => {
-                    if (response.statusText === "OK" && response.data) {
-                        const events = [] as Events;
-                        (response.data as []).forEach((event: any) => {
-                            event = (({ id, name, categoryId, imageURL, description }) => ({
-                                id,
-                                name,
-                                categoryId,
-                                start_date: sqlDateToEpoch(event.startDate),
-                                end_date: sqlDateToEpoch(event.endDate),
-                                imageURL,
-                                description,
-                            }))(event);
-                            events.push(event);
-                        });
-
-                        setEvents(events);
-                    } else {
-                        if (response.statusText !== "OK") {
-                            showMessage.error("Podczas pobierania wydarzeń wystapił błąd");
-                        } else {
-                            showMessage.error("Brak wydarzeń do pobrania");
-                        }
-                    }
-                })
-                .catch(error => {
-                    showMessage.error("error");
-                });
         }
     }, [JSON.stringify(response)]);
 
@@ -258,7 +229,7 @@ export const EditEventForm = (props: Props) => {
                 type="reset"
                 aria-label="reset"
                 onClick={handleReset}
-                children="Reset"
+                children="Wyczyść"
             />
         </form>
     );

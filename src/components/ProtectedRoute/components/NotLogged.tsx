@@ -10,7 +10,7 @@ const NotLogged = () => {
         }, 5000);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <article className="not-logged">You are not logged! &#128541; </article>;
+    return <article className="not-logged">Nie jesteś zalogowany! &#128542; </article>;
 };
 
 export default NotLogged;

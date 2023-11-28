@@ -18,7 +18,7 @@ const ManageCategories = (props: Props) => {
         <Modal sx={{ outline: 0 }} open={isOpen} onClose={handleClose}>
             <section className="login login--large">
                 <CloseButton closeHandler={handleClose} />
-                <h2 className="login__prompt">Please edit or add category</h2>
+                <h2 className="login__prompt">Edytuj lub usuń kategorię</h2>
                 {isOnline && <Tabs />}
             </section>
         </Modal>

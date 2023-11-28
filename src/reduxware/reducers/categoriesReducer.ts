@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { setCategories } from "../actionCreators";
-import { Categories, RootStateType } from "types/index";
+import { Categories, RootStateType } from "types";
 
 const initialState = {
     categories: [

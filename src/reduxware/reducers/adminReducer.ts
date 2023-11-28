@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import { setIsAdmin } from "../actionCreators";
-import { RootStateType } from "types/index";
+import { RootStateType } from "types";
 
 const initialState = { isAdmin: false };
 

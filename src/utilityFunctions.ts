@@ -14,3 +14,6 @@ export async function fetchData(URL: string) {
 }
 
 export const sqlDateToEpoch = (date: string) => moment(date).valueOf();
+
+export const formDateToSQL = (date: string) =>
+    moment.unix(Number(new Date(date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]");

@@ -1,10 +1,10 @@
 import { Messages, Validators } from "../../types";
 
 export const messages: Messages = {
-    minLength: "Minimal length not reached, should be at least ",
-    maxLength: "Max length exceeded ",
-    required: "This field is required ",
-    pattern: "Not a valid e-mail",
+    minLength: "Za krótki ciąg ",
+    maxLength: "Za długi ciąg ",
+    required: "To pole jest wymagane",
+    pattern: "Zły email",
 };
 export const criterions = {
     password: {

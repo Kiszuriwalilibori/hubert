@@ -1,21 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import uuid from "react-uuid";
 
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 import { BasicButton } from "components";
 import { criterions, messages, validators } from "./utils";
-import { Events } from "types";
-import { useSelector } from "react-redux";
-import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
-import uuid from "react-uuid";
-import moment from "moment";
-import useAxios from "hooks/useAxios";
-import axios, { AxiosRequestConfig } from "axios";
-import useMessage from "hooks/useMessage";
-import { URL_EVENTS } from "config";
-import useDispatchAction from "hooks/useDispatchAction";
 
-import { sqlDateToEpoch } from "utilityFunctions";
+import { getCategoriesSelector } from "reduxware/reducers/categoriesReducer";
+import { useAxios, useMessage, useUpdateEvents } from "hooks";
+import { AxiosRequestConfig } from "axios";
+import { formDateToSQL } from "utilityFunctions";
 
 interface Props {
     setError: () => void;
@@ -23,11 +18,12 @@ interface Props {
     handleClose: () => void;
 }
 const newEventInitialState = undefined as unknown as Object;
+
 export const AddEventForm = (props: Props) => {
     const [newEvent, setNewEvent] = useState(newEventInitialState);
-    const { setError, clearError, handleClose } = props;
+    const { clearError, handleClose } = props;
     const categories = useSelector(getCategoriesSelector);
-    const { setEvents } = useDispatchAction();
+    const updateEvents = useUpdateEvents();
     const refForm = useRef<HTMLFormElement>(null);
     const blur = (e: React.MouseEvent<HTMLElement>) => e.currentTarget && e.currentTarget.blur();
     const showMessage = useMessage();
@@ -39,8 +35,8 @@ export const AddEventForm = (props: Props) => {
             name: data.name,
             description: data.description,
             imageURL: data.image,
-            startDate: moment.unix(Number(new Date(data.start_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
-            endDate: moment.unix(Number(new Date(data.end_date)) / 1000).format("YYYY-MM-DDTHH:mm:ss.mss[Z]"),
+            startDate: formDateToSQL(data.start_date),
+            endDate: formDateToSQL(data.end_date),
         };
 
         setNewEvent(newEvent);
@@ -57,38 +53,8 @@ export const AddEventForm = (props: Props) => {
             response && showMessage.success("Pomyślnie utworzono wydarzenie");
             reset();
             setNewEvent(newEventInitialState);
+            updateEvents();
             handleClose();
-
-            axios
-                .get(URL_EVENTS)
-                .then(response => {
-                    if (response.statusText === "OK" && response.data) {
-                        const events = [] as Events;
-                        (response.data as []).forEach((event: any) => {
-                            event = (({ id, name, categoryId, imageURL, description }) => ({
-                                id,
-                                name,
-                                categoryId,
-                                start_date: sqlDateToEpoch(event.startDate),
-                                end_date: sqlDateToEpoch(event.endDate),
-                                imageURL,
-                                description,
-                            }))(event);
-                            events.push(event);
-                        });
-
-                        setEvents(events);
-                    } else {
-                        if (response.statusText !== "OK") {
-                            showMessage.error("Podczas pobierania wydarzeń wystapił błąd");
-                        } else {
-                            showMessage.error("Brak wydarzeń do pobrania");
-                        }
-                    }
-                })
-                .catch(error => {
-                    showMessage.error("error");
-                });
         }
     }, [JSON.stringify(response)]);
 
@@ -247,7 +213,7 @@ export const AddEventForm = (props: Props) => {
                 type="reset"
                 aria-label="reset"
                 onClick={handleReset}
-                children="Reset"
+                children="Wyczyść"
             />
         </form>
     );

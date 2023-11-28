@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { setEvents } from "../actionCreators";
-import { Events, RootStateType } from "types/index";
+import { Events, RootStateType } from "types";
 
 const initialState = {
     events: [

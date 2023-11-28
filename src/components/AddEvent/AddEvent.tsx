@@ -22,7 +22,7 @@ const AddEvent = (props: Props) => {
         <Modal sx={{ outline: 0 }} open={isOpen} onClose={handleClose}>
             <section className="login">
                 <CloseButton closeHandler={handleClose} />
-                <h2 className="login__prompt">Please enter event data</h2>
+                <h2 className="login__prompt">Podaj dane wydarzenia</h2>
                 {isOnline && <AddEventForm handleClose={handleClose} setError={setError} clearError={clearError} />}
             </section>
         </Modal>

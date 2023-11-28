@@ -133,7 +133,7 @@ export const EditCategoryForm = (props: Props) => {
                 type="reset"
                 aria-label="reset"
                 onClick={handleReset}
-                children="Reset"
+                children="Wyczyść"
             />
         </form>
     );

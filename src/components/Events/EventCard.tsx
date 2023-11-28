@@ -1,4 +1,5 @@
 import * as React from "react";
+import moment from "moment";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -6,18 +7,18 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useCallback } from "react";
-import moment from "moment";
-import { Event, Events } from "types";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
+
+import { IconButtonProps } from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+
+import { Event } from "types";
+
 import { isAdminSelector } from "reduxware/reducers/adminReducer";
-import { useAxios, useDispatchAction, useMessage } from "hooks";
-import axios, { AxiosRequestConfig } from "axios";
-import { sqlDateToEpoch } from "utilityFunctions";
-import { URL_EVENTS } from "config";
+import { useAxios, useDispatchAction, useMessage, useUpdateEvents } from "hooks";
+import { AxiosRequestConfig } from "axios";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -42,13 +43,14 @@ export default function EventCard(props: Props) {
     const { name, imageURL, start_date, end_date, description, id } = props.event;
     const showMessage = useMessage();
     const { setEvents } = useDispatchAction();
+    const updateEvents = useUpdateEvents();
     const { categoryName } = props;
     const [ID, setID] = React.useState<undefined | string>(undefined);
     const [expanded, setExpanded] = React.useState(false);
     const isAdmin = useSelector(isAdminSelector);
     const { setIsEditEventActive, setEditEventData } = useDispatchAction();
 
-    const handleEdit = useCallback(() => {
+    const handleEdit = React.useCallback(() => {
         setIsEditEventActive(true);
         setEditEventData({ ...props.event });
     }, [setIsEditEventActive]);
@@ -57,7 +59,7 @@ export default function EventCard(props: Props) {
         setExpanded(!expanded);
     };
 
-    const handleRemove = useCallback(() => {
+    const handleRemove = React.useCallback(() => {
         setID(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -71,46 +73,14 @@ export default function EventCard(props: Props) {
     React.useEffect(() => {
         if (response) {
             response && showMessage.success("Pomyślnie usunięto wydarzenie");
-
             setID(undefined);
-
-            axios
-                .get(URL_EVENTS)
-                .then(response => {
-                    if (response.statusText === "OK" && response.data) {
-                        const events = [] as Events;
-                        (response.data as []).forEach((event: any) => {
-                            event = (({ id, name, categoryId, imageURL, description }) => ({
-                                id,
-                                name,
-                                categoryId,
-                                start_date: sqlDateToEpoch(event.startDate),
-                                end_date: sqlDateToEpoch(event.endDate),
-                                imageURL,
-                                description,
-                            }))(event);
-                            events.push(event);
-                        });
-
-                        setEvents(events);
-                    } else {
-                        if (response.statusText !== "OK") {
-                            showMessage.error("Podczas pobierania wydarzeń wystapił błąd");
-                        } else {
-                            showMessage.error("Brak wydarzeń do pobrania");
-                        }
-                    }
-                })
-                .catch(error => {
-                    showMessage.error("error");
-                });
+            updateEvents();
         }
     }, [JSON.stringify(response)]);
 
     React.useEffect(() => {
         if (error) {
             showMessage.error(`Podczas próby usunięcia wydarzenia wystąpił błąd ${error}`);
-
             setID(undefined);
         }
     }, [JSON.stringify(error)]);

@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { Events, Event, Categories } from "types/index";
+import { Events, Event, Categories } from "types";
 
 export const setIsAdmin = createAction<boolean>("IS_ADMIN_SET");
 export const setEvents = createAction<Events>("EVENTS_SET");

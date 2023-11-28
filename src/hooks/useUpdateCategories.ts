@@ -4,7 +4,7 @@ import useDispatchAction from "./useDispatchAction";
 import useMessage from "./useMessage";
 
 import { URL_CATEGORIES } from "config";
-import { Categories, Category } from "types/index";
+import { Categories, Category } from "types";
 
 export const useUpdateCategories = () => {
     const { setCategories } = useDispatchAction();
